@@ -1,0 +1,16 @@
+{
+  "name": "cloudblue-agent-skills",
+  "owner": {
+    "name": "CloudBlue Connect",
+    "email": "together@cloudblue.com"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for CloudBlue Connect — vendor billing conversion and usage reporting workflows."
+  },
+  "plugins": [
+    {
+      "name": "usage",
+      "source": "./usage"
+    }
+  ]
+}

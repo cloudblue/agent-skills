@@ -1,0 +1,22 @@
+[
+  {
+    "category_id": "AWS.Amazon Elastic Compute Cloud",
+    "category_name": "Amazon Elastic Compute Cloud",
+    "category_description": "AWS Amazon Elastic Compute Cloud usage"
+  },
+  {
+    "category_id": "AWS.Amazon Simple Storage Service",
+    "category_name": "Amazon Simple Storage Service",
+    "category_description": "AWS Amazon Simple Storage Service usage"
+  },
+  {
+    "category_id": "CFQ7TTC0LFLX:0021:CFQ7TTC12ZPW",
+    "category_name": "Microsoft 365 E3 (no Teams)",
+    "category_description": "Microsoft Microsoft 365 E3 (no Teams)"
+  },
+  {
+    "category_id": "CFQ7TTC0LH16:0001:CFQ7TTC0W27W",
+    "category_name": "Exchange Online (Plan 1)",
+    "category_description": "Microsoft Exchange Online (Plan 1)"
+  }
+]
