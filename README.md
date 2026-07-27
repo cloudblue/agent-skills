@@ -86,7 +86,6 @@ agent-skills/
 │   └── marketplace.json                       ← Codex marketplace catalog
 ├── gemini-extension.json                      ← Gemini CLI extension manifest
 ├── GEMINI.md                                  ← Gemini context file (imports the skill)
-├── plugin.json                                ← Antigravity plugin manifest
 ├── INSTALL.md                                 ← per-harness install instructions
 ├── <plugin-name>/                             ← one folder per plugin
 │   ├── .claude-plugin/

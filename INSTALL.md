@@ -137,10 +137,17 @@ gemini extensions uninstall cloudblue-agent-skills
 <details>
 <summary><strong>Antigravity (<code>agy</code>)</strong></summary>
 
+The `agy` CLI installs separately from the desktop app
+(`brew install --cask antigravity-cli`, or the
+[official installer](https://antigravity.google/docs/cli/install)).
+
 ### Install
 
+Point `agy` at the plugin folder, not the repo root — it expects
+`skills/` at the plugin root:
+
 ```bash
-agy plugin install https://github.com/cloudblue/agent-skills
+agy plugin install https://github.com/cloudblue/agent-skills/tree/master/usage
 ```
 
 ### Verify
@@ -152,14 +159,14 @@ agy plugin list
 ### Update
 
 ```bash
-agy plugin uninstall cloudblue-agent-skills
-agy plugin install https://github.com/cloudblue/agent-skills
+agy plugin uninstall usage
+agy plugin install https://github.com/cloudblue/agent-skills/tree/master/usage
 ```
 
 ### Uninstall
 
 ```bash
-agy plugin uninstall cloudblue-agent-skills
+agy plugin uninstall usage
 ```
 
 </details>
