@@ -2,6 +2,12 @@
 name: connect-usage-converter
 description: Use when the user wants to convert a vendor billing or usage report (AWS Cost & Usage Report, Microsoft NCE / Azure billing data, Adobe VIP invoice, or any other tabular usage source) into a CloudBlue Connect Usage File and submit it through the Usage MCP server. Triggers on requests like "upload our AWS bill to Connect", "convert this NCE CSV", "convert this Azure billing file", "submit Adobe usage", "create a Connect usage report from this spreadsheet", or "validate this usage file before submission".
 version: 0.1.0
+license: Apache-2.0
+metadata:
+  hermes:
+    tags: [CloudBlue, Connect, Usage, Billing, MCP]
+    category: productivity
+    related_skills: []
 ---
 
 # Connect Usage Converter

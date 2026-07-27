@@ -42,30 +42,15 @@ Type `$connect-usage-converter` to invoke the skill explicitly; Codex can
 also invoke it implicitly when a task matches. Verify with
 `codex plugin list`.
 
-### Cursor
+### Other agents
 
-Install with the community [`skills`][skills-cli] CLI:
-
-```bash
-npx skills add cloudblue/agent-skills -a cursor        # this workspace
-npx skills add cloudblue/agent-skills -a cursor -g     # all projects
-```
-
-Then type `/connect-usage-converter` in a new agent chat.
-
-### Cross-platform (Claude Code, Cursor, Cline, Copilot, …)
-
-The community [`skills`][skills-cli] CLI installs into whichever AI agent
-you have configured:
+Cursor, Gemini CLI, Antigravity, GitHub Copilot, Zed, Pi, Hermes,
+OpenCode, Amp, and any other Agent Skills harness are covered in
+[INSTALL.md](./INSTALL.md). The quick cross-platform route is the
+community [`skills`][skills-cli] CLI:
 
 ```bash
 npx skills add cloudblue/agent-skills
-```
-
-This pulls all skills in this repo. To install a specific one:
-
-```bash
-npx skills add cloudblue/agent-skills --plugin usage
 ```
 
 ### Development install (symlink)
@@ -99,6 +84,10 @@ agent-skills/
 │   └── plugin.json                            ← Codex plugin manifest
 ├── .agents/plugins/
 │   └── marketplace.json                       ← Codex marketplace catalog
+├── gemini-extension.json                      ← Gemini CLI extension manifest
+├── GEMINI.md                                  ← Gemini context file (imports the skill)
+├── plugin.json                                ← Antigravity plugin manifest
+├── INSTALL.md                                 ← per-harness install instructions
 ├── <plugin-name>/                             ← one folder per plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json                        ← plugin metadata + version
@@ -131,4 +120,4 @@ Open a PR adding:
 
 [plugin-spec]: https://github.com/anthropics/skills
 [hashicorp-skills]: https://github.com/hashicorp/agent-skills
-[skills-cli]: https://github.com/skills-org/skills
+[skills-cli]: https://www.skills.sh/

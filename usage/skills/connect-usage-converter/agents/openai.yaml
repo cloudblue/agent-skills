@@ -1,0 +1,7 @@
+interface:
+  display_name: "Connect Usage Converter"
+  short_description: "Vendor billing reports to Connect Usage Files"
+  default_prompt: "Use $connect-usage-converter to convert this billing report into a Connect Usage File."
+
+policy:
+  allow_implicit_invocation: true
