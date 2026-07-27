@@ -265,27 +265,32 @@ npx skills remove connect-usage-converter
 
 ### Install
 
-```bash
-hermes skills install cloudblue/agent-skills/usage/skills/connect-usage-converter
-```
-
-Prefer to browse first? Add this repo as a skill source (a "tap"):
+Copy the skill folder into Hermes' skills directory:
 
 ```bash
-hermes skills tap add cloudblue/agent-skills
-hermes skills search usage
-hermes skills install cloudblue/agent-skills/usage/skills/connect-usage-converter
+git clone https://github.com/cloudblue/agent-skills
+mkdir -p ~/.hermes/skills
+cp -R agent-skills/usage/skills/connect-usage-converter ~/.hermes/skills/
 ```
 
 Type `/connect-usage-converter`.
+
+The registry route
+(`hermes skills install cloudblue/agent-skills/usage/skills/connect-usage-converter`)
+works once skills.sh indexes this repo; until then it errors with
+"could not fetch". Taps don't apply here — `hermes skills tap` only
+scans a top-level `skills/` directory, and this repo nests skills under
+`usage/skills/`.
 
 ### Verify / Update / Uninstall
 
 ```bash
 hermes skills list
-hermes skills update connect-usage-converter
-hermes skills uninstall connect-usage-converter
 ```
+
+Update by re-copying the folder after `git pull`; remove with
+`hermes skills uninstall connect-usage-converter` or by deleting the
+folder.
 
 </details>
 
