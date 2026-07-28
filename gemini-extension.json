@@ -1,0 +1,6 @@
+{
+  "name": "cloudblue-agent-skills",
+  "version": "0.1.0",
+  "description": "Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Usage MCP server.",
+  "contextFileName": "GEMINI.md"
+}

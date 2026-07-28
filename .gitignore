@@ -8,3 +8,6 @@ venv/
 *.swp
 .idea/
 .vscode/
+
+# Codex marketplace lives in .agents/ — un-ignore it (global gitignores often exclude it)
+!.agents/

@@ -29,19 +29,28 @@ Register the marketplace, then install the skill you want:
 Updates flow through `/plugin update`. To see what's available before
 installing, run `/plugin marketplace browse cloudblue-agent-skills`.
 
-### Cross-platform (Claude Code, Cursor, Cline, Copilot, …)
+### Codex
 
-The community [`skills`][skills-cli] CLI installs into whichever AI agent
-you have configured:
+Register the marketplace, then add the plugin:
+
+```bash
+codex plugin marketplace add cloudblue/agent-skills --ref master
+codex plugin add usage@cloudblue-agent-skills
+```
+
+Type `$connect-usage-converter` to invoke the skill explicitly; Codex can
+also invoke it implicitly when a task matches. Verify with
+`codex plugin list`.
+
+### Other agents
+
+Cursor, Gemini CLI, Antigravity, GitHub Copilot, Zed, Pi, Hermes,
+OpenCode, Amp, and any other Agent Skills harness are covered in
+[INSTALL.md](./INSTALL.md). The quick cross-platform route is the
+community [`skills`][skills-cli] CLI:
 
 ```bash
 npx skills add cloudblue/agent-skills
-```
-
-This pulls all skills in this repo. To install a specific one:
-
-```bash
-npx skills add cloudblue/agent-skills --plugin usage
 ```
 
 ### Development install (symlink)
@@ -70,7 +79,14 @@ pointing at the MCP endpoint with an `ApiKey` header.
 ```
 agent-skills/
 ├── .claude-plugin/
-│   └── marketplace.json                       ← marketplace catalog (no version)
+│   └── marketplace.json                       ← Claude Code marketplace catalog (no version)
+├── .codex-plugin/
+│   └── plugin.json                            ← Codex plugin manifest
+├── .agents/plugins/
+│   └── marketplace.json                       ← Codex marketplace catalog
+├── gemini-extension.json                      ← Gemini CLI extension manifest
+├── GEMINI.md                                  ← Gemini context file (imports the skill)
+├── INSTALL.md                                 ← per-harness install instructions
 ├── <plugin-name>/                             ← one folder per plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json                        ← plugin metadata + version
@@ -103,4 +119,4 @@ Open a PR adding:
 
 [plugin-spec]: https://github.com/anthropics/skills
 [hashicorp-skills]: https://github.com/hashicorp/agent-skills
-[skills-cli]: https://github.com/skills-org/skills
+[skills-cli]: https://www.skills.sh/

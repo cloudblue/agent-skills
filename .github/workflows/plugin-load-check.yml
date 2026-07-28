@@ -1,0 +1,33 @@
+name: plugin loads in Claude Code
+
+# Installs the plugin from this checkout into a scratch CLAUDE_CONFIG_DIR and
+# fails if it does not reach "enabled". Catches load-layer breakage that
+# schema validation misses.
+on:
+  pull_request:
+    paths:
+      - .claude-plugin/**
+      - usage/**
+      - .github/workflows/plugin-load-check.yml
+  push:
+    branches: [master]
+
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Install the plugin from this checkout into a scratch config
+        run: |
+          export CLAUDE_CONFIG_DIR="$RUNNER_TEMP/claude-scratch"
+          mkdir -p "$CLAUDE_CONFIG_DIR"
+          claude plugin marketplace add "$GITHUB_WORKSPACE"
+          claude plugin install usage@cloudblue-agent-skills
+          claude plugin list | tee plugin-list.txt
+          grep -A3 "usage@cloudblue-agent-skills" plugin-list.txt | grep -q "✔ enabled" || {
+            echo "::error::usage plugin failed to load; see claude plugin list output above"
+            exit 1
+          }
