@@ -11,6 +11,7 @@ you register the marketplace.
 
 | Plugin | Purpose |
 |---|---|
+| [`core`](core/) | First-run setup for the Connect MCP server: configure any MCP client against the single Connect endpoint, mint a token with the right permissions, diagnose 401/403/empty-catalog problems. Bundles the `connect-mcp-setup` skill. |
 | [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Usage MCP server. Bundles the `connect-usage-converter` skill. |
 
 More skills land here as the Connect MCP ecosystem grows.

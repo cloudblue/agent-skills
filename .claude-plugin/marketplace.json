@@ -9,6 +9,10 @@
   },
   "plugins": [
     {
+      "name": "core",
+      "source": "./core"
+    },
+    {
       "name": "usage",
       "source": "./usage"
     }

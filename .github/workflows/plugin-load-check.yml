@@ -7,6 +7,7 @@ on:
   pull_request:
     paths:
       - .claude-plugin/**
+      - core/**
       - usage/**
       - .github/workflows/plugin-load-check.yml
   push:
@@ -25,9 +26,12 @@ jobs:
           export CLAUDE_CONFIG_DIR="$RUNNER_TEMP/claude-scratch"
           mkdir -p "$CLAUDE_CONFIG_DIR"
           claude plugin marketplace add "$GITHUB_WORKSPACE"
+          claude plugin install core@cloudblue-agent-skills
           claude plugin install usage@cloudblue-agent-skills
           claude plugin list | tee plugin-list.txt
-          grep -A3 "usage@cloudblue-agent-skills" plugin-list.txt | grep -q "✔ enabled" || {
-            echo "::error::usage plugin failed to load; see claude plugin list output above"
-            exit 1
-          }
+          for p in core usage; do
+            grep -A3 "$p@cloudblue-agent-skills" plugin-list.txt | grep -q "✔ enabled" || {
+              echo "::error::$p plugin failed to load; see claude plugin list output above"
+              exit 1
+            }
+          done
