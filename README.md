@@ -29,6 +29,30 @@ Register the marketplace, then install the skill you want:
 Updates flow through `/plugin update`. To see what's available before
 installing, run `/plugin marketplace browse cloudblue-agent-skills`.
 
+### Codex
+
+Register the marketplace, then add the plugin:
+
+```bash
+codex plugin marketplace add cloudblue/agent-skills --ref master
+codex plugin add usage@cloudblue-agent-skills
+```
+
+Type `$connect-usage-converter` to invoke the skill explicitly; Codex can
+also invoke it implicitly when a task matches. Verify with
+`codex plugin list`.
+
+### Cursor
+
+Install with the community [`skills`][skills-cli] CLI:
+
+```bash
+npx skills add cloudblue/agent-skills -a cursor        # this workspace
+npx skills add cloudblue/agent-skills -a cursor -g     # all projects
+```
+
+Then type `/connect-usage-converter` in a new agent chat.
+
 ### Cross-platform (Claude Code, Cursor, Cline, Copilot, …)
 
 The community [`skills`][skills-cli] CLI installs into whichever AI agent
@@ -70,7 +94,11 @@ pointing at the MCP endpoint with an `ApiKey` header.
 ```
 agent-skills/
 ├── .claude-plugin/
-│   └── marketplace.json                       ← marketplace catalog (no version)
+│   └── marketplace.json                       ← Claude Code marketplace catalog (no version)
+├── .codex-plugin/
+│   └── plugin.json                            ← Codex plugin manifest
+├── .agents/plugins/
+│   └── marketplace.json                       ← Codex marketplace catalog
 ├── <plugin-name>/                             ← one folder per plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json                        ← plugin metadata + version

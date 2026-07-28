@@ -1,0 +1,21 @@
+{
+  "name": "cloudblue-agent-skills",
+  "interface": {
+    "displayName": "CloudBlue Agent Skills"
+  },
+  "plugins": [
+    {
+      "name": "usage",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/cloudblue/agent-skills.git",
+        "ref": "master"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
