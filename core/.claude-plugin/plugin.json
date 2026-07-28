@@ -1,7 +1,7 @@
 {
   "name": "core",
   "version": "0.1.0",
-  "description": "First-run setup for the CloudBlue Connect MCP server: point any MCP client at the single Connect endpoint, mint an API token with the right permissions, and diagnose 401/403/empty-catalog connection problems.",
+  "description": "Foundation skills for the CloudBlue Connect MCP server: first-run setup (endpoint, token permissions, 401/403/empty-catalog diagnosis) and the catalog navigator (which of the nine domains owns a concept, VerboseID prefixes, list-tool conventions).",
   "author": {
     "name": "CloudBlue Connect",
     "email": "together@cloudblue.com"
