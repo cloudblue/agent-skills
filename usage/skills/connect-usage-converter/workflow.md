@@ -254,7 +254,12 @@ Surface the errors to the user in a readable summary. Common patterns:
 Fix in the source rows, rebuild the XLSX, re-upload (Step 8). Repeat until
 `status = uploaded`.
 
-## Step 10 — Submit
+## Step 10 — Submit (GATED)
+
+This is the **outward-facing** step and the only gated one in the workflow.
+Before calling it, put in front of the user: the usage file id, the product and
+contract, the billing period, the row count, and the total amount per currency.
+Then wait for a yes. See the Autonomy table in [`SKILL.md`](SKILL.md#autonomy).
 
 ```
 submit_usage_file(usage_file_id="UF-…")
@@ -262,6 +267,9 @@ submit_usage_file(usage_file_id="UF-…")
 
 Transitions the file to `pending` — the provider sees it now and can
 accept or reject. The vendor leg of the workflow is complete.
+
+A rejection is not a rollback: the provider has already read the file, and
+fixing it means another submission with its own gate.
 
 ## Step 11 (provider side, separate session) — Accept / reject
 
