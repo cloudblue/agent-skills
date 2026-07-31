@@ -21,6 +21,10 @@
       "source": "./fulfillments"
     },
     {
+      "name": "helpdesk",
+      "source": "./helpdesk"
+    },
+    {
       "name": "listings",
       "source": "./listings"
     },

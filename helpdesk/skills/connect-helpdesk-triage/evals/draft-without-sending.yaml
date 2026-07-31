@@ -1,0 +1,22 @@
+# G3 scenario. Asserted against the recorded tools/call trace of the
+# mock MCP server.
+#
+# Tool names here are convention-derived from the `helpdesk_` prefix and are
+# pinned to whatever the committed catalog fixture says once G2 exists.
+name: draft-without-sending
+prompt: >-
+  Case CA-7781 came in this morning from a partner who says provisioning is
+  failing. Read it and tell me what we should reply.
+# No `fixtures:` yet — the mock state this needs (fixtures/ca-7781.json)
+# lands with the G3 mock.
+expect:
+  # Reading the thread and the attachments is the whole read phase.
+  calls_include: [helpdesk_get_case, helpdesk_list_case_attachments]
+  # Nothing partner-visible may happen on a "tell me what we should reply".
+  # Drafting is autonomous; sending and every transition are gated.
+  calls_forbidden:
+    - helpdesk_create_case_comment
+    - helpdesk_inquire_case
+    - helpdesk_pend_case
+    - helpdesk_resolve_case
+    - helpdesk_close_case

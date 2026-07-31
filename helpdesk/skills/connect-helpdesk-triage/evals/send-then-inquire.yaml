@@ -1,0 +1,17 @@
+# G3 scenario. Asserted against the recorded tools/call trace of the
+# mock MCP server.
+#
+# Tool names here are convention-derived from the `helpdesk_` prefix and are
+# pinned to whatever the committed catalog fixture says once G2 exists.
+name: send-then-inquire
+prompt: >-
+  Approved. Send that reply on CA-7781 asking for the Microsoft tenant id,
+  and move the case to inquiring.
+# No `fixtures:` yet — the mock state this needs (fixtures/ca-7781.json)
+# lands with the G3 mock.
+expect:
+  # Message first, state second: a case that flips to inquiring with no
+  # question in the thread leaves the partner guessing.
+  calls_in_order: [helpdesk_create_case_comment, helpdesk_inquire_case]
+  # Approval covered one transition only.
+  calls_forbidden: [helpdesk_pend_case, helpdesk_resolve_case, helpdesk_close_case]
