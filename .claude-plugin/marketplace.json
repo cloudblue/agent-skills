@@ -17,6 +17,10 @@
       "source": "./products"
     },
     {
+      "name": "fulfillment",
+      "source": "./fulfillment"
+    },
+    {
       "name": "listings",
       "source": "./listings"
     },

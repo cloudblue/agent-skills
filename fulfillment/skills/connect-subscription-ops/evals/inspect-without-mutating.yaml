@@ -1,0 +1,21 @@
+# G3 scenario. Tool names below are CONVENTION-DERIVED, not catalog-verified:
+# no assets or fulfillments tool name appears verbatim in any source available
+# at authoring time. Reconcile every name here against
+# tests/fixtures/catalog.json (G2) before this scenario is first run.
+# Fixtures land with the G3 mock.
+#
+# What this proves: a churn signal is not an order. The user mentions leaving
+# but asks only to look, so the agent inspects and reports — no request of any
+# family is created. This is the guard on "full autonomy once the user orders
+# the change": no order, no mutation.
+name: inspect-without-mutating
+prompt: "The customer behind AS-3456-7890-1234 is talking about leaving. Can you take a look at what they currently have?"
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/as-3456-7890-1234-active.json) lands with the G3 mock.
+expect:
+  calls_include: [assets_get_asset]
+  calls_forbidden:
+    - fulfillments_create_cancel_request
+    - fulfillments_create_suspend_request
+    - fulfillments_create_change_request
+    - fulfillments_create_transfer_request

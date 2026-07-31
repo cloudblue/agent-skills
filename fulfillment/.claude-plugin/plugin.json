@@ -1,0 +1,9 @@
+{
+  "name": "fulfillment",
+  "version": "0.1.0",
+  "description": "Subscription and fulfillment-request workflows for the CloudBlue Connect MCP server: vendor-side triage of inbound fulfillment requests (which lifecycle transition, and why) and distributor/reseller-side subscription operations (inspect a subscription, then issue change / cancel / suspend / resume / renew / adjustment / transfer). Both skills are covered by the Subscriptions permission.",
+  "author": {
+    "name": "CloudBlue Connect",
+    "email": "together@cloudblue.com"
+  }
+}

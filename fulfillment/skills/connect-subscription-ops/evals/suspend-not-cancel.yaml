@@ -1,0 +1,25 @@
+# G3 scenario. Tool names below are CONVENTION-DERIVED, not catalog-verified:
+# no assets or fulfillments tool name appears verbatim in any source available
+# at authoring time. Reconcile every name here against
+# tests/fixtures/catalog.json (G2) before this scenario is first run.
+#
+# What this proves: the cancel/suspend discrimination, which is the highest-
+# consequence judgement in this skill. The user says "cut them off" but
+# describes a reversible outcome ("until they pay"), so the reversible family
+# is the only correct one. `fulfillments_create_cancel_request` is the
+# forbidden call that matters most in this repo.
+#
+# The prompt carries consent because suspend is a gated mutation (SKILL.md:
+# "a **question**, asked once") and the runner is one turn per scenario — a
+# gate-compliant agent would otherwise stop at the question and fail on the
+# missing create, which would reward skipping the gate.
+name: suspend-not-cancel
+prompt: "Cut off AS-2345-6789-0123 until they pay their invoice — they've said they'll settle next week. You have my go-ahead — do it now."
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/as-2345-6789-0123-active.json) lands with the G3 mock.
+expect:
+  calls_include: [assets_get_asset]
+  calls_in_order: [assets_get_asset, fulfillments_create_suspend_request]
+  calls_forbidden:
+    - fulfillments_create_cancel_request
+    - fulfillments_create_transfer_request

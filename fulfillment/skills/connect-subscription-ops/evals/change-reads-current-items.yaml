@@ -1,0 +1,23 @@
+# G3 scenario. Tool names below are CONVENTION-DERIVED, not catalog-verified:
+# no assets or fulfillments tool name appears verbatim in any source available
+# at authoring time. Reconcile every name here against
+# tests/fixtures/catalog.json (G2) before this scenario is first run.
+# Fixtures land with the G3 mock.
+#
+# What this proves: read-before-write. An incremental instruction ("+5") must
+# be resolved against the subscription's current quantity before the change
+# request is built, so the asset read has to precede the create. Also proves
+# the agent does not wander into the destructive families when asked for a
+# routine change.
+name: change-reads-current-items
+prompt: "Add 5 more seats to subscription AS-1234-5678-9012."
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/as-1234-5678-9012-active-20-seats.json) lands with the G3 mock.
+expect:
+  calls_include: [assets_get_asset]
+  calls_in_order: [assets_get_asset, fulfillments_create_change_request]
+  calls_forbidden:
+    - fulfillments_create_cancel_request
+    - fulfillments_create_suspend_request
+    - fulfillments_create_adjustment_request
+    - fulfillments_approve_request
