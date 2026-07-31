@@ -11,3 +11,10 @@ venv/
 
 # Codex marketplace lives in .agents/ — un-ignore it (global gitignores often exclude it)
 !.agents/
+# …but vendored skills pulled in by the `skills` CLI are not ours to ship
+.agents/skills/
+skills-lock.json
+
+# Local working notes and review artifacts — never versioned
+SKILLS_PLAN.md
+.connect-review/
