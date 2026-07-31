@@ -16,7 +16,7 @@ you register the marketplace.
 | [`helpdesk`](helpdesk/) | Triage helpdesk cases: read the case and its attachments, pick the correct transition (inquire, pend, resolve, close), draft the partner-facing reply. Drafting is autonomous; sending waits for confirmation. Skill: `connect-helpdesk-triage`. |
 | [`listings`](listings/) | Drive the listing request state machine (submit, deploy, complete, refine, cancel, assign, unassign), pick the target marketplace, and diagnose a stuck listing by naming which side has to act next. Skill: `connect-listing-manager`. |
 | [`pricing`](pricing/) | Drive the price list lifecycle: find a list, open a draft version, update price points, activate or schedule it, plus bulk import of a vendor rate card (XLSX/CSV) into per-point updates. Skill: `connect-pricelist-manager`. |
-| [`products`](products/) | Build a product end to end through the products tools — shell, items, the ordering / fulfillment / configuration parameter phases, templates, version publication. Skill: `connect-product-builder`. |
+| [`products`](products/) | Build a product end to end through the products tools — shell, items, the ordering / fulfillment / configuration parameter phases, templates, version publication — and orchestrate a full launch across products, pricing, marketplaces and listings. Skills: `connect-product-builder`, `connect-product-launch`. |
 | [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Connect MCP server. Bundles the `connect-usage-converter` skill. |
 
 More skills land here as the Connect MCP ecosystem grows.
