@@ -1,0 +1,18 @@
+# The happy path with publication explicitly authorized. Proves the sequence
+# runs in the required order and that publish comes last, after the shell is
+# created — never as the first or an early call.
+#
+# No `fixtures:` — starts from an empty tenant; the mock only needs
+# catalog.json until the G3 fixture format exists.
+name: build-and-publish-on-confirmation
+prompt: >-
+  Build our product "Acme Backup Cloud" in Connect and publish the version
+  when it is complete — you have my approval to publish, don't ask again.
+  Items: "Acme Backup Standard" MPN ACME-BKP-STD, unit Licenses, monthly; and
+  "Acme Backup Pro" MPN ACME-BKP-PRO, unit Licenses, monthly. Ordering
+  parameters: domain name and administrator email, both required.
+  Fulfillment parameters: tenant ID and console URL. Activation message:
+  "Your Acme Backup tenant is ready."
+expect:
+  calls_include: [products_manage, products_publish_version]
+  calls_in_order: [products_manage, products_publish_version]
