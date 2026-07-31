@@ -1,0 +1,58 @@
+{
+  "price_list": {
+    "id": "PL-9000",
+    "name": "Acme Cloud Suite - EU marketplace",
+    "marketplace_id": "MP-9000",
+    "product_id": "PRD-123-456-789",
+    "currency": "EUR",
+    "status": "active",
+    "active_version": 11
+  },
+  "versions": {
+    "limit": 10,
+    "offset": 0,
+    "total": 1,
+    "items": [
+      {
+        "id": "SYNTHETIC-VERSION-ID-11",
+        "version": 11,
+        "status": "active",
+        "effective_date": "2026-07-01"
+      }
+    ]
+  },
+  "price_points": {
+    "limit": 10,
+    "offset": 0,
+    "total": 900,
+    "items": [
+      {
+        "id": "SYNTHETIC-POINT-ID-1",
+        "version": "SYNTHETIC-VERSION-ID-11",
+        "mpn": "ACME-PRO-M",
+        "unit": "Seat",
+        "period": "Monthly",
+        "cost": "12.00",
+        "sale_price": "18.00"
+      },
+      {
+        "id": "SYNTHETIC-POINT-ID-2",
+        "version": "SYNTHETIC-VERSION-ID-11",
+        "mpn": "ACME-PRO-Y",
+        "unit": "Seat",
+        "period": "Yearly",
+        "cost": "132.00",
+        "sale_price": "198.00"
+      },
+      {
+        "id": "SYNTHETIC-POINT-ID-3",
+        "version": "SYNTHETIC-VERSION-ID-11",
+        "mpn": "ACME-LITE-M",
+        "unit": "Seat",
+        "period": "Monthly",
+        "cost": "5.70",
+        "sale_price": "9.00"
+      }
+    ]
+  }
+}

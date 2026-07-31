@@ -1,0 +1,9 @@
+{
+  "name": "pricing",
+  "version": "0.1.0",
+  "description": "Drive the CloudBlue Connect price list lifecycle through the pricing MCP tools: find a list, open a draft version, update price points, and activate or schedule it — plus bulk import of a vendor rate card (XLSX/CSV) into per-point updates.",
+  "author": {
+    "name": "CloudBlue Connect",
+    "email": "together@cloudblue.com"
+  }
+}

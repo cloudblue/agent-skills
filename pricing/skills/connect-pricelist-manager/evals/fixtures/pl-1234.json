@@ -1,0 +1,70 @@
+{
+  "price_list": {
+    "id": "PL-1234",
+    "name": "Acme Cloud Suite - US marketplace",
+    "marketplace_id": "MP-1234",
+    "product_id": "PRD-123-456-789",
+    "currency": "USD",
+    "status": "active",
+    "active_version": 3
+  },
+  "versions": {
+    "limit": 10,
+    "offset": 0,
+    "total": 3,
+    "items": [
+      {
+        "id": "SYNTHETIC-VERSION-ID-2",
+        "version": 2,
+        "status": "superseded",
+        "effective_date": "2026-04-01"
+      },
+      {
+        "id": "SYNTHETIC-VERSION-ID-3",
+        "version": 3,
+        "status": "active",
+        "effective_date": "2026-07-01"
+      },
+      {
+        "id": "SYNTHETIC-VERSION-ID-4",
+        "version": 4,
+        "status": "draft",
+        "effective_date": null
+      }
+    ]
+  },
+  "price_points": {
+    "limit": 10,
+    "offset": 0,
+    "total": 3,
+    "items": [
+      {
+        "id": "SYNTHETIC-POINT-ID-1",
+        "version": "SYNTHETIC-VERSION-ID-4",
+        "mpn": "ACME-PRO-M",
+        "unit": "Seat",
+        "period": "Monthly",
+        "cost": "12.00",
+        "sale_price": "18.00"
+      },
+      {
+        "id": "SYNTHETIC-POINT-ID-3",
+        "version": "SYNTHETIC-VERSION-ID-4",
+        "mpn": "ACME-LITE-M",
+        "unit": "Seat",
+        "period": "Monthly",
+        "cost": "5.70",
+        "sale_price": "9.00"
+      },
+      {
+        "id": "SYNTHETIC-POINT-ID-5",
+        "version": "SYNTHETIC-VERSION-ID-4",
+        "mpn": "ACME-STORE-M",
+        "unit": "GB",
+        "period": "Monthly",
+        "cost": "0.01",
+        "sale_price": "0.29"
+      }
+    ]
+  }
+}

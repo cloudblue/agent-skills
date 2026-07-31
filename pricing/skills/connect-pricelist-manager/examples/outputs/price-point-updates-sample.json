@@ -1,0 +1,45 @@
+[
+  {
+    "point_id": "SYNTHETIC-POINT-ID-1",
+    "mpn": "ACME-PRO-M",
+    "changes": {
+      "cost": {
+        "from": "12.00",
+        "to": "13.80",
+        "pct": 15.0
+      },
+      "sale_price": {
+        "from": "18.00",
+        "to": "20.70",
+        "pct": 15.0
+      }
+    }
+  },
+  {
+    "point_id": "SYNTHETIC-POINT-ID-2",
+    "mpn": "ACME-PRO-Y",
+    "changes": {
+      "cost": {
+        "from": "132.00",
+        "to": "151.80",
+        "pct": 15.0
+      },
+      "sale_price": {
+        "from": "198.00",
+        "to": "227.70",
+        "pct": 15.0
+      }
+    }
+  },
+  {
+    "point_id": "SYNTHETIC-POINT-ID-5",
+    "mpn": "ACME-STORE-M",
+    "changes": {
+      "cost": {
+        "from": "0.01",
+        "to": "0.18",
+        "pct": 1700.0
+      }
+    }
+  }
+]

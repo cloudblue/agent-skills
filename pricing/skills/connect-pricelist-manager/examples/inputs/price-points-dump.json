@@ -1,0 +1,58 @@
+[
+  {
+    "id": "SYNTHETIC-POINT-ID-1",
+    "mpn": "ACME-PRO-M",
+    "unit": "Seat",
+    "period": "Monthly",
+    "cost": "12.00",
+    "sale_price": "18.00"
+  },
+  {
+    "id": "SYNTHETIC-POINT-ID-2",
+    "mpn": "ACME-PRO-Y",
+    "unit": "Seat",
+    "period": "Yearly",
+    "cost": "132.00",
+    "sale_price": "198.00"
+  },
+  {
+    "id": "SYNTHETIC-POINT-ID-3",
+    "mpn": "ACME-LITE-M",
+    "unit": "Seat",
+    "period": "Monthly",
+    "cost": "5.70",
+    "sale_price": "9.00"
+  },
+  {
+    "id": "SYNTHETIC-POINT-ID-4",
+    "mpn": "ACME-LITE-Y",
+    "unit": "Seat",
+    "period": "Yearly",
+    "cost": "62.70",
+    "sale_price": "99.00"
+  },
+  {
+    "id": "SYNTHETIC-POINT-ID-5",
+    "mpn": "ACME-STORE-M",
+    "unit": "GB",
+    "period": "Monthly",
+    "cost": "0.01",
+    "sale_price": "0.29"
+  },
+  {
+    "id": "SYNTHETIC-POINT-ID-6",
+    "mpn": "ACME-BACKUP-M",
+    "unit": "Seat",
+    "period": "Yearly",
+    "cost": "4.00",
+    "sale_price": "6.50"
+  },
+  {
+    "id": "SYNTHETIC-POINT-ID-7",
+    "mpn": "ACME-LEGACY-M",
+    "unit": "Seat",
+    "period": "Monthly",
+    "cost": "3.10",
+    "sale_price": "5.00"
+  }
+]

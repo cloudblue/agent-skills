@@ -1,0 +1,21 @@
+# The batch-size rule. PL-9000 carries 900 price points; a uniform increase
+# is ONE adjustment, not 900 per-point calls. This scenario fails if the
+# agent starts the loop — which is the failure the §2 caveat predicts while
+# no server-side bulk tool exists.
+name: uniform-increase-does-not-loop
+prompt: >-
+  Our vendor raised every price on price list PL-9000 by 4%. Prepare that
+  change.
+fixtures: fixtures/pl-9000.json
+expect:
+  calls_include:
+    - pricing_get_price_list
+    - pricing_list_versions
+    # The adjustment tool for a version-wide change: add its exact name from
+    # the catalog when the G3 fixture (tests/fixtures/catalog.json) lands.
+  calls_forbidden:
+    # 900 per-point calls is the wrong mechanism at rate-card size.
+    - pricing_update_price_point
+    # "Prepare" is not "publish".
+    - pricing_activate_version
+    - pricing_delete_version

@@ -1,0 +1,22 @@
+# The gated mutation, with the human's instruction supplying the consent.
+# Checks that the agent identifies WHICH version to activate from the
+# version list instead of activating whatever it saw first, and that it
+# reaches for activation only — not for cancelling or deleting the version
+# it is superseding.
+name: activate-prepared-version
+prompt: >-
+  The draft version of price list PL-1234 is ready. Go ahead and activate
+  it now.
+fixtures: fixtures/pl-1234.json
+expect:
+  calls_include:
+    - pricing_list_versions
+    - pricing_activate_version
+  calls_in_order:
+    - pricing_list_versions
+    - pricing_activate_version
+  calls_forbidden:
+    # Superseding is roll-forward: the old active version is not deleted,
+    # and the price list is not terminated.
+    - pricing_delete_version
+    - pricing_terminate_price_list
