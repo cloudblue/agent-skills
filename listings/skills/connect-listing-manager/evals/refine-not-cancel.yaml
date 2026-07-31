@@ -1,0 +1,30 @@
+# Distributor side, and the transition most often confused with `cancel`.
+# The user names the action ("send it back"), which is the explicit
+# confirmation the refine gate requires — so refine is expected to fire
+# here, while the terminal and forward moves must not.
+#
+# TOOL NAMES BELOW ARE CONVENTION-DERIVED (`listings_*` + the verb), not
+# read from a live catalog. Reconcile them against
+# tests/fixtures/catalog.json when G2 lands.
+name: refine-not-cancel
+prompt: >-
+  The listing request for PRD-4210 on MP-12345 is sitting in reviewing, but the
+  vendor left the support URL blank. Send it back to them and ask for it.
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/prd-4210-reviewing-missing-support-url.json) lands with the G3
+# mock.
+expect:
+  calls_include:
+    - listings_get_listing_request
+    - listings_refine_listing_request
+  # Read the request before acting on it — never transition off a list row.
+  calls_in_order:
+    - listings_get_listing_request
+    - listings_refine_listing_request
+  # `cancel` is terminal and is the wrong reading of "send it back";
+  # `deploy`/`complete` would publish a listing the distributor just said
+  # is incomplete.
+  calls_forbidden:
+    - listings_cancel_listing_request
+    - listings_deploy_listing_request
+    - listings_complete_listing_request

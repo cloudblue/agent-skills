@@ -1,0 +1,30 @@
+# Diagnosis is the half of this skill that earns its place, and it is
+# entirely read-only: the agent must name the state and the owning side
+# without touching the state machine.
+#
+# TOOL NAMES BELOW ARE CONVENTION-DERIVED (`listings_*` + the verb),
+# not read from a live catalog. Reconcile them against
+# tests/fixtures/catalog.json when G2 lands, before trusting a pass/fail.
+name: diagnose-stuck-listing-request
+prompt: >-
+  We asked to get PRD-4210 listed on marketplace MP-12345 three weeks ago and
+  it still isn't live. What's going on and who do I chase?
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/prd-4210-reviewing-unassigned.json) lands with the G3 mock.
+expect:
+  calls_include:
+    - listings_list_listing_requests
+    - listings_get_listing_request
+  calls_in_order:
+    - listings_list_listing_requests
+    - listings_get_listing_request
+  # Nothing in a diagnosis may mutate the request. `cancel` is the
+  # dangerous instinct ("clear it out and start again"); re-submitting is
+  # the impatient one.
+  calls_forbidden:
+    - listings_cancel_listing_request
+    - listings_submit_listing_request
+    - listings_deploy_listing_request
+    - listings_complete_listing_request
+    - listings_refine_listing_request
+    - listings_manage_listing_request
