@@ -192,7 +192,7 @@ The rungs are `connect-navigator`'s (free / announce / gated).
 | Everything inside a stage up to that stage's gate | **as the stage skill defines it** — no more |
 | The three gates (publish, activate, submit) | **gated** — one confirmation each, at its own seam |
 | Anything destructive (delete a version, terminate a price list, cancel a request) | **gated**, and only when the user asks for it by name — never as launch cleanup |
-| Distributor `deploy` / `complete` | **counterparty** — report which side owns it, and stop there |
+| Distributor `deploy` / `complete` | **counterparty** — report which side owns it, and stop there. If the operator explicitly confirms both accounts are theirs and directs the distributor leg, these become ordinary gates (see `connect-listing-manager`) |
 
 ## Non-goals
 
@@ -202,7 +202,9 @@ The rungs are `connect-navigator`'s (free / announce / gated).
   marketplaces to enter. This skill sequences; the vendor decides.
 - **Acting for the counterparty.** The distributor's `deploy` and `complete`
   are their calls from their account. When the chain needs them, say so and
-  stop.
+  stop. A counterparty token being available is not permission — but an
+  operator who explicitly confirms both accounts are theirs and names the
+  transition gets the distributor leg as normal gated steps, not a refusal.
 - **Undoing a launch.** There is no un-launch. Teardown is deliberate,
   destructive, human-driven work and it is not this skill's.
 - **Contracts, agreements, offers and packs.** No MCP tools exist for them
