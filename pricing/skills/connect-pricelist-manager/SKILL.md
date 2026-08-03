@@ -48,7 +48,7 @@ see `connect-navigator`, Shared conventions.
 | Create or edit a list, or open a new version | the pricing `manage` / version-create family | Connect exposes one `manage` tool per resource: passing an existing id updates, omitting it creates. |
 | Price points in a version | the pricing price-point list/get family | One point per item in scope. Read **one** point before writing many — its keys are the schema. |
 | Change one point | `pricing_update_price_point` | Per point, per call. See [Batch size](#batch-size). |
-| Uniform change across a version | the pricing adjustment family | A percentage/absolute change across many points is *one* adjustment, not N point updates. Prefer it. |
+| Uniform change across a version | the pricing adjustment family | A percentage/absolute change across many points is *one* adjustment, not N point updates. Prefer it **if a create/apply tool exists** — in the current catalog the adjustment family is read-only (list/get), so per-point looping within the batch-size thresholds is the actual path, not a last resort. |
 | Put a version live | `pricing_activate_version` and its scheduling counterpart | **Gated.** Confirm with the human first. |
 | Undo a not-yet-effective version | the cancel / delete family for versions | **Gated and destructive.** Confirm first, never as cleanup on your own initiative. |
 
@@ -76,10 +76,17 @@ Detail, with worked call order and the failure modes, is in
 5. **Apply.** Per-point updates via `pricing_update_price_point`, or one
    adjustment if the change is uniform. *Mutation: changes draft prices.
    Not gated — the draft is not effective yet — but report what you changed.*
-6. **Summarize the diff for the human**: list id, version, points changed,
+   Percentage changes: round **half-up to the list's precision**, and call
+   out in the diff any point the rounding leaves unchanged (a +5% on 0.09 at
+   precision 0.01 is a no-op) or lands on a boundary — silent divergence
+   between runs starts here.
+6. **After a cancel, trust `status`, not `start_at`.** Cancelling a scheduled
+   version returns it to `draft` but leaves the old `start_at` populated;
+   checking the date field alone misreads it as still scheduled.
+7. **Summarize the diff for the human**: list id, version, points changed,
    largest increase and decrease, currency, and anything that did not
    resolve.
-7. **Go live — gated.** Ask for explicit confirmation, then either activate
+8. **Go live — gated.** Ask for explicit confirmation, then either activate
    now or schedule for the effective date the user names. *Mutation:
    changes what partners pay.* Never bundle this into step 5.
 
