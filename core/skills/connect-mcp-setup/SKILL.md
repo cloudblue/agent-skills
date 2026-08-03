@@ -114,6 +114,7 @@ Work top-down; each symptom has one dominant cause.
 | `403` on every tool of **one domain** | Token lacks that module's permission | Add the owning module to the token (remember: fulfillments + assets → Subscriptions) |
 | `403` on one specific action | The token's account is on the wrong side of the transaction (e.g. vendor token calling a provider-only action) | Use a token from the account that owns the action |
 | `tools/list` is empty | Token carries MCP but no module permissions, or the environment's MCP deployment is incomplete | Check the token's modules first; if they look right, contact the CloudBlue administrator |
+| `tools/list` is empty but the token shows **"All modules"** | The blanket "All" grant (`MD-0000`) is excluded from the permission set the gateway sees — a token holding only "All" resolves to zero modules, silently, with an HTTP 200 | Re-mint the token selecting each needed module **by name**; never rely on the "All" option for MCP |
 | `404` | Wrong URL — usually a stale per-module path | Use `https://api.connect.cloudblue.com/public/v1/mcp` |
 | Whole chains feel slow | Each tool call is one REST round trip (~50–200 ms); multi-step workflows take seconds | Expected; not a fault |
 

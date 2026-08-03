@@ -7,7 +7,17 @@ metadata:
   hermes:
     tags: [CloudBlue, Connect, MCP, Navigation, Catalog]
     category: productivity
-    related_skills: [connect-mcp-setup]
+    related_skills:
+      [
+        connect-mcp-setup,
+        connect-product-builder,
+        connect-pricelist-manager,
+        connect-listing-manager,
+        connect-request-triage,
+        connect-subscription-ops,
+        connect-helpdesk-triage,
+        connect-usage-converter,
+      ]
 ---
 
 # Connect Navigator
@@ -40,10 +50,9 @@ are resolved, how the list tools behave, and what makes a mutation
 | `marketplaces` | marketplaces |
 | `assets` | subscription read access |
 
-Tool names in most domains carry the domain prefix
-(`pricing_get_price_list`, `products_publish_version`); the `usage` domain
-is the exception — its tools are unprefixed (`get_conversion_guide`,
-`manage_usage_file`).
+Tool names carry the domain prefix in every domain
+(`pricing_get_price_list`, `products_publish_version`,
+`usage_get_conversion_guide`).
 
 ## Concept → domain
 
@@ -150,8 +159,10 @@ The tools follow one server-side standard across domains:
 - **List returns are minimal** — typically id + name. Fetch the domain's
   `get` tool for full detail before reasoning about an object; don't
   assume a list row carries the fields you need.
-- **Create/update is one `manage` tool** per resource, distinguished by
-  whether you pass an existing id.
+- **Create/update is usually one `manage` tool** per resource, distinguished
+  by whether you pass an existing id — but not in every domain: pricing splits
+  them (`pricing_create_price_list` / `pricing_update_price_list`, same for
+  versions). Match the verb to the catalog, don't assume the pattern.
 - **`403` means permissions, not a bug.** Every `403`, and every token or
   connection problem, is the `connect-mcp-setup` skill's territory (`core`
   plugin) — it owns the permission model. A domain skill names the modules
