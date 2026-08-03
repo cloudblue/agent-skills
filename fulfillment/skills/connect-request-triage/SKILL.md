@@ -176,6 +176,13 @@ can omit `value_error`.) If the catalog lacks the parameter read, say
 which parameter is empty-and-required instead of guessing at the error
 text.
 
+**`value_error` is sticky.** Writing a value does not clear the
+parameter's `value_error`, and neither does `pend` — the text can survive
+all the way past `approve`. Read it as "what was asked at some point",
+never as "still blocked": the live signal is the request's `status` plus
+whether the value is now present. A diagnosis that says "admin_email is
+still flagged" about an approved request has been fooled by exactly this.
+
 ## When triage says the problem isn't the request
 
 | Symptom | Actual cause | Where it lives |
