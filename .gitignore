@@ -18,3 +18,7 @@ skills-lock.json
 # Local working notes and review artifacts — never versioned
 SKILLS_PLAN.md
 .connect-review/
+LOCAL_TESTING_STATUS.md
+SKILLS_TEST_PLAN.md
+SKILLS_TEST_RESULTS.md
+seed_connect.py
