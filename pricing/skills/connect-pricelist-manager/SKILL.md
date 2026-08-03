@@ -44,7 +44,7 @@ see `connect-navigator`, Shared conventions.
 |---|---|---|
 | Find a price list | the pricing `*_list_*` tool for price lists | Flat filters (`marketplace_id`, `product_id`, `status`), `limit`/`offset`. Returns id + name only. |
 | Full detail of one list | `pricing_get_price_list` | Gives the list's marketplace, currency, and which version is active. |
-| Versions of a list | `pricing_list_versions` | The state machine lives here: draft / scheduled / active / superseded. |
+| Versions of a list | `pricing_list_versions` | The state machine lives here: processing / draft / scheduled / active / obsolete / expired. |
 | Create or edit a list, or open a new version | the pricing `manage` / version-create family | Connect exposes one `manage` tool per resource: passing an existing id updates, omitting it creates. |
 | Price points in a version | the pricing price-point list/get family | One point per item in scope. Read **one** point before writing many — its keys are the schema. |
 | Change one point | `pricing_update_price_point` | Per point, per call. See [Batch size](#batch-size). |
@@ -62,7 +62,12 @@ Detail, with worked call order and the failure modes, is in
 2. **Establish the editable version.** If a draft already exists, reuse it —
    do not open a second one. If none exists, create a new version (it starts
    from the current active prices). *Mutation: creates an object. Safe — a
-   draft affects nobody until activated.*
+   draft affects nobody until activated.* **Caveat:** `status: draft` alone
+   does not identify the working copy — a version that was bypassed (a
+   sibling created from it was activated directly) stays `draft` forever, so
+   a list can carry several. The editable draft is the newest one whose
+   `base` is the currently active version; check `base.id` and creation
+   order, not just status.
 3. **Read one price point** from that version to learn the attribute names
    (cost vs. sale price, per-tier fields, unit/period). Do not assume.
 4. **Prepare the changes** — from the user's instruction, or by mapping a
