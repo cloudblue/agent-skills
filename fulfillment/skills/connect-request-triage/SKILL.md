@@ -147,26 +147,34 @@ like". Work it in this order:
 4. **Report** the parameter's name and title, its phase, its constraints,
    and an example of a valid value.
 
-You cannot fill an ordering parameter on the customer's behalf — that is
-the counterparty's action, and waiting on it is a legitimate resting state
-for a request. Say so plainly instead of looking for a transition that
-makes the wait disappear.
+Do not invent an ordering parameter's value on the customer's behalf —
+answering is the counterparty's action, and waiting on it is a legitimate
+resting state for a request. Say so plainly instead of looking for a
+transition that makes the wait disappear. Writing a value the customer
+*did* give (relayed by the user) is different — see below, and treat it
+as a gated mutation like any other write.
 
-**How the answer actually arrives.** The customer fills the request's
-activation form (the `params_form_url` on the inquiring request — the
-storefront re-sends it), not any vendor API. There is no MCP tool that
-writes parameter values into a request, and the REST update is only
-accepted for products with the *inquiring validation* capability — without
-it the API answers `REQ_001` ("Only pending, draft or inquiring
-Fulfillments with enabled validation capability can be updated"). If the
-user relays a value in chat, the honest move is to say which channel it
-must go through, not to write it for them.
+**How the answer actually arrives.** The customer's channel is the
+request's activation form (the `params_form_url` on the inquiring
+request — the storefront re-sends it), not any vendor API. On the vendor
+side, the fulfillments domain carries a request-parameter **update** tool
+(a restricted write on the request itself): use it to fill
+fulfillment-phase parameters before approving, and — when the user relays
+a customer's answer explicitly — to write the ordering value they gave
+you. Parameter writes are only accepted for products with the *inquiring
+validation* capability; without it the API answers `REQ_001` ("Only
+pending, draft or inquiring Fulfillments with enabled validation
+capability can be updated"), and the customer's form is the only channel
+left — say so instead of retrying. On older catalogs the tool is absent
+altogether; the same answer applies.
 
-**Reading the diagnosis may need the REST request object.** The
-subscription-side parameter read can omit `value_error` and the
-constraints; the request's own REST representation carries them. If the
-flagged text isn't visible through the tools, say which parameter is
-empty-and-required instead of guessing at the error text.
+**Reading the diagnosis.** The fulfillments domain's request-parameter
+**read** tool carries each parameter's `value`, `value_error` and whether
+it is required — that is the diagnosis surface. (The plain request read
+deliberately omits parameters, and the subscription-side parameter read
+can omit `value_error`.) If the catalog lacks the parameter read, say
+which parameter is empty-and-required instead of guessing at the error
+text.
 
 ## When triage says the problem isn't the request
 
