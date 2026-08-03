@@ -52,7 +52,9 @@ are resolved, how the list tools behave, and what makes a mutation
 
 Tool names carry the domain prefix in every domain
 (`pricing_get_price_list`, `products_publish_version`,
-`usage_get_conversion_guide`).
+`usage_get_conversion_guide`) — with one exception: the `assets` domain's
+tools are prefixed `subscriptions_*`, not `assets_*` (the domain keeps the
+platform's module name; the tools speak the user's word).
 
 ## Concept → domain
 
@@ -64,7 +66,7 @@ Includes the aliases users actually say.
 | price list, price point, rate card, price version | `pricing` | |
 | listing, "publish to a marketplace", listing request | `listings` | |
 | marketplace | `marketplaces` | read/select; listings do the publishing |
-| subscription, asset | `assets` | read-only; *changing* one goes through `fulfillments` |
+| subscription, asset | `assets` | read-only, tools prefixed `subscriptions_*`; *changing* one goes through `fulfillments` |
 | purchase / change / cancel / suspend / renew order, fulfillment request, "pending request" | `fulfillments` | |
 | tier account, T1 / T2, customer hierarchy, tier account request | `tier_accounts` | T1 is closest to the end customer |
 | usage, consumption, billing report upload, usage file | `usage` | |
