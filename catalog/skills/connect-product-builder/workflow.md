@@ -171,6 +171,16 @@ conversation.** Present the checklist result plus a one-line statement of
 consequence — "this freezes version N of PRD-…; further changes need a new
 version" — and wait.
 
+The publish tool **re-publishes an existing numbered version** — it does not
+create one. Cutting a *new* version from the current draft master (the common
+case when extending an already-published product) answers `404` on the target
+version number; see the failure table for the path.
+
+After publishing, verify with `stats.versions` (and the item's own `status`),
+not the product's top-level `changes_description`/`public`/`staging` fields —
+those reflect the *next* draft master and reset immediately, which reads as if
+the publish never happened.
+
 What changes after publication:
 
 - The published version is **immutable**. Edits to items, parameters and
@@ -196,5 +206,6 @@ tool that would undo it.
 | Duplicate error on a parameter | The parameter id is already taken | Read the existing parameter; reuse it if it means the same thing, otherwise pick a new id with the human |
 | Item or parameter rejected on a published product | The version is frozen | A new version is required; do not retry the same call |
 | Publish rejected as incomplete | Something in the checklist is genuinely missing | Read the error, fix that specific gap, re-run the checklist. Do not loop on publish |
+| `404` on publish for version N | Version N does not exist yet — the publish tool only re-publishes existing versions | A new version must be created-and-published in one step; if no create-version tool exists in the catalog, that is a documented MCP gap and the REST `POST /products/{id}/versions` (with `changes_description`, `public`) is the only path — say so instead of retrying |
 | Activation message renders blank fields | Template placeholder does not match a real parameter id | Compare the template body against the parameter list; fix the template |
 | A request for prices, marketplaces or listings | Out of scope | Name the owning plugin and hand over — do not improvise with `products` tools |
