@@ -7,7 +7,11 @@ first answer.
 
 1. **Is there a request at all?** List the requests for the product and
    marketplace. No request means nothing was ever asked for — the most common
-   cause of "we submitted weeks ago" is a draft nobody submitted.
+   cause of "we submitted weeks ago" is a draft nobody submitted. **Caveat:**
+   an unsubmitted draft is only listable from the vendor side; on a
+   distributor token an empty list does not prove nothing exists. If the
+   vendor claims they created something, verify from their side (or by exact
+   id) before concluding the request was never made.
 2. **Read the state.** Fetch the request and read `status`. The state machine
    table in [`SKILL.md`](SKILL.md#the-state-machine) names the owning side. Say
    the side out loud: *"this is with the distributor; it has been in

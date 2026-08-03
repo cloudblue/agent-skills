@@ -29,7 +29,7 @@ That is what this skill is for. Two jobs:
 
 ## Before you call anything
 
-**Verbs, not tool names.** The `listings` domain has 12 tools and
+**Verbs, not tool names.** The `listings` domain has 13 tools and
 `marketplaces` has 4. This skill names the *transition verbs* (`submit`,
 `deploy`, `complete`, `refine`, `cancel`, `assign`, `unassign`) and the
 *families* (`listings_*`, `marketplaces_*`); the names come from the catalog,
@@ -119,7 +119,12 @@ column is not advisory.
    have a published version, and it needs an active price list in the
    marketplace currency. Neither is this skill's job (see Non-goals) — but
    check them before submitting, because the failure surfaces here.
-2. Look for an existing listing for that product/marketplace pair.
+2. Look for an existing listing for that product/marketplace pair — **from
+   the vendor token**. Draft requests are visible only to the side that
+   created them: a distributor's list shows nothing until the vendor
+   submits, even though a `get` by exact id would find it. Checking from
+   the wrong side reads as "no listing yet" and produces a duplicate
+   request.
 3. Create or update the draft request.
 4. Show the user the assembled request. **Stop.**
 5. On confirmation, `submit`. Then one read to confirm the new state,
