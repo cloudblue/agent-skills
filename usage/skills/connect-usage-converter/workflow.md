@@ -231,12 +231,14 @@ usage_get_file(usage_file_id="UF-…")
 Look at `status` **and the `records` counters together**. Possible
 terminal-for-this-step outcomes:
 
-- `uploaded` with `records.valid > 0` → file passed processing, ready to
-  submit. Proceed to step 10.
+- `ready` with `records.valid > 0` (a `processed_file_uri` appears on the
+  file at the same moment) → file passed processing, safe to submit.
+  Proceed to step 10.
 - `invalid` → row-level errors surfaced. Go to step 9a.
 
-`processing` is transient (polling step). `ready` means the file is still
-in draft and the upload didn't take.
+`processing` is transient (polling step), and so is `uploaded` — it means
+the upload landed but server-side processing hasn't finished; keep polling.
+Submit is only accepted from `ready`.
 
 **`uploaded` with records stuck at 0/0/0** (and zero validation errors) is a
 distinct failure: the upload landed but server-side parsing never ran or
@@ -272,7 +274,8 @@ Surface the errors to the user in a readable summary. Common patterns:
   parameter name is right.
 
 Fix in the source rows, rebuild the XLSX, re-upload (Step 8). Repeat until
-`status = uploaded`.
+`status = ready`. Re-uploading to an `invalid` file is the supported path —
+the platform takes it back through `uploading → uploaded → processing`.
 
 ## Step 10 — Submit (GATED)
 
