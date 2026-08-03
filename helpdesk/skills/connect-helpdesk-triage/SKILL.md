@@ -79,6 +79,13 @@ was never asked anything.
 | `resolve` | The partner's problem is addressed and verifiable | Partner (to confirm or come back) | State what was done and how they can verify it |
 | `close` | Nothing is pending on either side | Nobody — terminal | Usually nothing new; if closing after silence, say why |
 
+The table names target states; the platform's state machine constrains the
+path. **`inquiring` cannot go straight to `resolved`** — the case must pass
+through `pending` first (the partner answered → `pend` → `resolve`). A
+rejected transition answers `VAL_001 "The action is not allowed for current
+status"`; treat that as "insert the missing hop", and announce the hop — it
+is outward-facing like any other transition.
+
 Rules that follow from the table:
 
 - **One ask per `inquire`.** Three questions in one message get one answer,
