@@ -152,6 +152,22 @@ the counterparty's action, and waiting on it is a legitimate resting state
 for a request. Say so plainly instead of looking for a transition that
 makes the wait disappear.
 
+**How the answer actually arrives.** The customer fills the request's
+activation form (the `params_form_url` on the inquiring request — the
+storefront re-sends it), not any vendor API. There is no MCP tool that
+writes parameter values into a request, and the REST update is only
+accepted for products with the *inquiring validation* capability — without
+it the API answers `REQ_001` ("Only pending, draft or inquiring
+Fulfillments with enabled validation capability can be updated"). If the
+user relays a value in chat, the honest move is to say which channel it
+must go through, not to write it for them.
+
+**Reading the diagnosis may need the REST request object.** The
+subscription-side parameter read can omit `value_error` and the
+constraints; the request's own REST representation carries them. If the
+flagged text isn't visible through the tools, say which parameter is
+empty-and-required instead of guessing at the error text.
+
 ## When triage says the problem isn't the request
 
 | Symptom | Actual cause | Where it lives |

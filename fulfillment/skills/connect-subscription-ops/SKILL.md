@@ -26,8 +26,9 @@ The request then has a lifecycle you do not control.
 lands in the vendor's queue and changes what the customer is entitled to or
 billed for — so all seven are **gated** (`connect-navigator`'s rungs). For
 `change`, `resume`, `renew` and `adjustment` the user's order *is* the yes:
-announce what you are doing, issue it, report the resulting `PR-…`, and don't
-ask twice. **`cancel`, `suspend` and `transfer` are the exception**: they
+announce what you are doing **as its own message before the call** (the
+announcement is a step, not a comment folded into the tool call), issue it,
+report the resulting `PR-…`, and don't ask twice. **`cancel`, `suspend` and `transfer` are the exception**: they
 remove or move a live customer's service, so restate exactly what will happen
 and get one confirmation even when the user named the intent. Once confirmed,
 proceed without re-asking.
@@ -89,6 +90,10 @@ exactly like success. This is why step 2 is not optional.
 
 State the arithmetic when you announce the change: "currently 20, you asked
 for +5, so the request sets 25."
+
+Items you do not include in the change request are left untouched — send
+only the items that change. There is no need to defensively re-send a PPU
+item's `-1` or the rest of the item mix.
 
 ### Cancel and suspend are not interchangeable
 
