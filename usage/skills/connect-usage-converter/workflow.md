@@ -100,6 +100,13 @@ Apply vendor-specific filtering and splitting:
   `start_time_utc` / `end_time_utc` to the file's billing-month bounds.
 - **Adobe:** drop `CANCELLATION` rows. Use `Ext Price` (pre-tax invoice
   currency), not `Line Total Amount` or `Extended Price Local`.
+- **Source carries no Connect-native identifier at all** (internal exports,
+  ad-hoc spreadsheets): resolve the target asset yourself before emitting —
+  `subscriptions_list` filtered by the file's contract and product, then
+  `subscriptions_get_items` to confirm the PPU item's MPN is on it. One
+  `active` candidate → use its `asset.id`. Several → ask the user which,
+  with the candidates listed; never guess an `asset_search_criteria` against
+  a parameter that isn't registered on the product.
 
 ## Step 5 — Dry-run validate
 
@@ -178,10 +185,13 @@ usage_manage_file(
     period_from="2026-05-01T00:00:00Z",
     period_to="2026-05-31T23:59:59Z",
     currency="USD",
-    external_id="CUR-554027867388-2026-05",   # optional traceability
-    note="Vendor: AWS, account 554027867388"  # optional free text
+    external_id="CUR-554027867388-2026-05"   # optional traceability
 )
 ```
+
+`note` is **update-only** — the create call rejects it. To attach free text,
+create first, then call `usage_manage_file` again with the returned
+`usage_file_id` and the `note`.
 
 Response includes the new `usage_file_id` (`UF-…`). Hold onto it for the
 rest of the chain.
@@ -218,13 +228,23 @@ content that can be stripped before encoding.
 usage_get_file(usage_file_id="UF-…")
 ```
 
-Look at `status`. Possible terminal-for-this-step outcomes:
+Look at `status` **and the `records` counters together**. Possible
+terminal-for-this-step outcomes:
 
-- `uploaded` → file passed processing, ready to submit. Proceed to step 10.
+- `uploaded` with `records.valid > 0` → file passed processing, ready to
+  submit. Proceed to step 10.
 - `invalid` → row-level errors surfaced. Go to step 9a.
 
 `processing` is transient (polling step). `ready` means the file is still
 in draft and the upload didn't take.
+
+**`uploaded` with records stuck at 0/0/0** (and zero validation errors) is a
+distinct failure: the upload landed but server-side parsing never ran or
+never finished. Nothing on the vendor side revives that file —
+`usage_reprocess_file` is a provider-side tool (access denied), and both
+re-upload and delete are refused once the file is wedged in this state. The
+recovery path is to create a **fresh** usage file (step 7) and upload there;
+report the stuck file id to the provider/administrator instead of looping.
 
 ### Step 9a — Inspect and fix validation errors
 
