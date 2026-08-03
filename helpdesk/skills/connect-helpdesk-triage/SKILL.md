@@ -1,6 +1,6 @@
 ---
 name: connect-helpdesk-triage
-description: Use when working a CloudBlue Connect helpdesk case (a `CA-` id) — reading what the partner actually asked, choosing the next lifecycle state (inquire, pend, resolve, close), handling attachments, and drafting the reply that goes out with it. Triggers on "triage case CA-1234", "draft a reply to this partner ticket", "the partner never answered our question", "can I close CA-1234", or "open a case about this failing subscription".
+description: Use when working a CloudBlue Connect helpdesk case (a `CA-` id) — reading what the partner actually asked, choosing the next lifecycle state (inquire, pend, resolve, close), handling attachments, and drafting the reply that goes out with it. Triggers on "triage case CA-1234", "which helpdesk cases need our attention", "draft a reply to this partner ticket", "the partner never answered our question", "can I close CA-1234", or "open a case about this failing subscription".
 version: 0.1.0
 license: Apache-2.0
 metadata:
@@ -46,7 +46,11 @@ attachments.
    what changed on the partner's side, whether your side already asked
    something and got no answer, and whether the ask drifted (the case now
    about a different problem than the subject says — very common after
-   three replies).
+   three replies). **If the catalog has no conversation/messages tool** (some
+   deployments expose only the case read and attachments), say so and triage
+   on the description plus the state-change history — and make the drafted
+   reply explicit that the thread itself was not readable, instead of
+   implying it was.
 3. **Read the attachments** before answering, not after. Screenshots and
    logs are usually the only place the real error string appears, and a
    reply that ignores an attached log reads as if nobody looked.
