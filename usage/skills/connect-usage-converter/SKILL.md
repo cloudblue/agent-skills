@@ -24,8 +24,8 @@ The authoritative cookbooks live on the MCP server and are fetched at runtime
 via the guide tools — the local mapping files here are quick references, not
 the source of truth.
 
-The `usage` domain is the one domain whose tools are **unprefixed**
-(`get_usage_file`, `manage_usage_file`), so the names below are verbs already.
+The `usage` domain's tools carry the `usage_` prefix like every other domain
+(`usage_get_file`, `usage_manage_file`).
 Read their descriptions once per session for the exact arguments; the catalog
 is the source of truth for those, per `connect-navigator`.
 

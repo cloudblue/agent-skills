@@ -24,7 +24,7 @@ loudly without these.
 ## Step 1 — Fetch the general guide
 
 ```
-get_conversion_guide()
+usage_get_conversion_guide()
 ```
 
 Returns markdown describing Connect's column model, period semantics,
@@ -34,7 +34,7 @@ this as authoritative.
 ## Step 2 — Fetch the vendor cookbook (if known)
 
 ```
-get_vendor_cookbook(vendor="aws-cur")          # or microsoft-nce / adobe-invoice
+usage_get_vendor_cookbook(vendor="aws-cur")          # or microsoft-nce / adobe-invoice
 ```
 
 Returns the per-vendor column-mapping rules. If the source vendor is
@@ -44,7 +44,7 @@ references plus the general guide for inference.
 ## Step 3 — Fetch the target schema
 
 ```
-describe_product_usage_schema(product_id="PRD-DEMO")
+usage_describe_product_schema(product_id="PRD-DEMO")
 ```
 
 Returns the exact column set for the records sheet, plus example row
@@ -104,7 +104,7 @@ Apply vendor-specific filtering and splitting:
 ## Step 5 — Dry-run validate
 
 ```
-validate_usage_payload(product_id="PRD-DEMO", rows=<list-of-dicts>)
+usage_validate_payload(product_id="PRD-DEMO", rows=<list-of-dicts>)
 ```
 
 The endpoint accepts at most 1000 rows per call and rejects larger
@@ -171,7 +171,7 @@ category_id, category_name, category_description
 ## Step 7 — Create the draft
 
 ```
-manage_usage_file(
+usage_manage_file(
     name="AWS CUR 2026-05",
     product_id="PRD-DEMO",
     contract_id="CRD-DEMO",
@@ -199,7 +199,7 @@ with open("usage.xlsx", "rb") as f:
 Then:
 
 ```
-upload_usage_file(
+usage_upload_file(
     usage_file_id="UF-2026-05-XXXX-YYYY",
     file_base64=b64,
     filename="aws-cur-2026-05.xlsx"
@@ -215,7 +215,7 @@ content that can be stripped before encoding.
 ## Step 9 — Poll for status
 
 ```
-get_usage_file(usage_file_id="UF-…")
+usage_get_file(usage_file_id="UF-…")
 ```
 
 Look at `status`. Possible terminal-for-this-step outcomes:
@@ -229,7 +229,7 @@ in draft and the upload didn't take.
 ### Step 9a — Inspect and fix validation errors
 
 ```
-get_usage_file_validation_errors(usage_file_id="UF-…", limit=50)
+usage_get_file_validation_errors(usage_file_id="UF-…", limit=50)
 ```
 
 The response shape is
@@ -262,7 +262,7 @@ contract, the billing period, the row count, and the total amount per currency.
 Then wait for a yes. See the Autonomy table in [`SKILL.md`](SKILL.md#autonomy).
 
 ```
-submit_usage_file(usage_file_id="UF-…")
+usage_submit_file(usage_file_id="UF-…")
 ```
 
 Transitions the file to `pending` — the provider sees it now and can
@@ -275,11 +275,11 @@ fixing it means another submission with its own gate.
 
 Out of scope for the vendor agent. The provider's agent uses:
 
-- `accept_usage_file(usage_file_id, acceptance_note)` — moves to
+- `usage_accept_file(usage_file_id, acceptance_note)` — moves to
   `accepted`, triggers record processing.
-- `reject_usage_file(usage_file_id, rejection_note)` — moves to
+- `usage_reject_file(usage_file_id, rejection_note)` — moves to
   `rejected`, surfaces the reason to the vendor for fix-and-resubmit.
-- `upload_reconciliation_file(...)` then `close_usage_file(...)` — closes
+- `usage_upload_reconciliation_file(...)` then `usage_close_file(...)` — closes
   the billing cycle.
 
 ## Error handling shortcuts
@@ -301,10 +301,10 @@ to expect from which call saves the agent from guess-and-parse loops.
 
 ### Write / transition tools
 
-`manage_usage_file`, `upload_usage_file`, `submit_usage_file`,
-`accept_usage_file`, `reject_usage_file`, `close_usage_file`,
-`delete_usage_file`, `reprocess_usage_file`, `upload_reconciliation_file`,
-`close_usage_record`.
+`usage_manage_file`, `usage_upload_file`, `usage_submit_file`,
+`usage_accept_file`, `usage_reject_file`, `usage_close_file`,
+`usage_delete_file`, `usage_reprocess_file`, `usage_upload_reconciliation_file`,
+`usage_close_record`.
 
 ```json
 {
@@ -318,7 +318,7 @@ On failure: `{"success": false, "message": "<reason>"}` (no `id`).
 
 ### List tools
 
-`list_usage_files`, `list_usage_records`.
+`usage_list_files`, `usage_list_records`.
 
 ```json
 {
@@ -337,8 +337,8 @@ to fetch full details.
 
 ### Get tools
 
-`get_usage_file`, `get_usage_record`, `get_product_usage_template`,
-`describe_product_usage_schema`.
+`usage_get_file`, `usage_get_record`, `usage_get_product_template`,
+`usage_describe_product_schema`.
 
 These return the **raw API response** (full resource JSON), not an envelope.
 Shape depends on the resource — inspect the response keys directly. On
@@ -346,7 +346,7 @@ failure they fall back to `{"success": false, "message": "<reason>"}`.
 
 ### Validation-errors tool
 
-`get_usage_file_validation_errors`.
+`usage_get_file_validation_errors`.
 
 ```json
 {
@@ -371,7 +371,7 @@ and re-upload after fixing the dominant failure patterns.
 
 ### Conversion-preflight tool
 
-`validate_usage_payload`.
+`usage_validate_payload`.
 
 ```json
 {
@@ -387,7 +387,7 @@ headers). `invalid_count == 0` means safe to proceed to draft creation.
 
 ### Guide tools
 
-`get_conversion_guide`, `get_vendor_cookbook`.
+`usage_get_conversion_guide`, `usage_get_vendor_cookbook`.
 
 ```json
 {
@@ -397,5 +397,5 @@ headers). `invalid_count == 0` means safe to proceed to draft creation.
 }
 ```
 
-`vendor` is present only on `get_vendor_cookbook`. On failure both fall back
+`vendor` is present only on `usage_get_vendor_cookbook`. On failure both fall back
 to the standard `{"success": false, "message": "<reason>"}` envelope.

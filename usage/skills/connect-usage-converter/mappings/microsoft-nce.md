@@ -1,6 +1,6 @@
 # Microsoft NCE → Connect Usage File — Field Mapping
 
-> **Quick reference.** The authoritative version lives on the Connect MCP server — call `get_vendor_cookbook(vendor="microsoft-nce")` for the up-to-date copy. Use this file for at-a-glance lookups while reasoning about a conversion.
+> **Quick reference.** The authoritative version lives on the Connect MCP server — call `usage_get_vendor_cookbook(vendor="microsoft-nce")` for the up-to-date copy. Use this file for at-a-glance lookups while reasoning about a conversion.
 >
 > NCE is the unified Microsoft CSP / Partner Center billing format. It covers **both** seat-based licenses (M365, Exchange Online) **and** Azure consumption (including Reservation Instances and Savings Plans). The mapping is uniform regardless of row type — RI / Savings Plan rows only differ in that they trigger a margin gross-up on `amount` (see edge cases).
 
@@ -38,7 +38,7 @@ NCE records use **`asset.id` lookup** (the agent must resolve `customer_id` → 
 | `category_id` | `{product_id}:{sku_id}:{availability_id}` (one row per distinct triple in records) |
 | `category_name` | `sku_name` |
 | `category_description` | optional — e.g. `"Microsoft {sku_name}"` |
-| **Usage File header** (`manage_usage_file` parameters) | |
+| **Usage File header** (`usage_manage_file` parameters) | |
 | `name` | caller's choice, e.g. `"Microsoft NCE {invoice_number}"` |
 | `product_id` | caller-supplied (the Connect product representing NCE) |
 | `contract_id` | caller-supplied (partner's distribution contract) |
