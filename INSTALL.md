@@ -1,12 +1,17 @@
 # Install
 
-The plugin in this repo (`usage`, bundling the `connect-usage-converter`
-skill) works in any agent that reads Claude Code plugins or the open
-Agent Skills format. Pick your harness below.
+This repo ships several plugins, each bundling one or more skills — the
+[README's plugin table](README.md) is the catalog. The instructions
+below use `<plugin>` and `<skill>` placeholders; substitute any row from
+that table (the examples use the `core` plugin and its
+`connect-mcp-setup` skill). Everything works in any agent that reads
+Claude Code plugins or the open Agent Skills format. Pick your harness
+below.
 
-Whatever the harness, the skill needs an MCP client configured to reach
-your Connect tenant — see
-[`usage/skills/connect-usage-converter/setup.md`](usage/skills/connect-usage-converter/setup.md).
+Whatever the harness, the skills need an MCP client configured to reach
+your Connect tenant — that setup (endpoint, token, permissions) is
+itself owned by a skill:
+[`core/skills/connect-mcp-setup`](core/skills/connect-mcp-setup/SKILL.md).
 
 <details>
 <summary><strong>Claude Code</strong></summary>
@@ -15,11 +20,11 @@ your Connect tenant — see
 
 ```bash
 claude plugin marketplace add cloudblue/agent-skills
-claude plugin install usage@cloudblue-agent-skills
+claude plugin install <plugin>@cloudblue-agent-skills   # e.g. core, usage
 ```
 
-The skill activates automatically on matching requests ("convert this
-NCE CSV", "upload our AWS bill to Connect").
+Skills activate automatically on matching requests ("convert this NCE
+CSV", "why does my token see an empty catalog").
 
 ### Verify
 
@@ -36,7 +41,7 @@ claude plugin marketplace update cloudblue-agent-skills
 ### Uninstall
 
 ```bash
-claude plugin uninstall usage
+claude plugin uninstall <plugin>
 claude plugin marketplace remove cloudblue-agent-skills
 ```
 
@@ -49,11 +54,11 @@ claude plugin marketplace remove cloudblue-agent-skills
 
 ```bash
 codex plugin marketplace add cloudblue/agent-skills --ref master
-codex plugin add usage@cloudblue-agent-skills
+codex plugin add <plugin>@cloudblue-agent-skills
 ```
 
-Type `$connect-usage-converter` to invoke explicitly; Codex can also
-invoke it implicitly on matching tasks.
+Type `$<skill>` (e.g. `$connect-mcp-setup`) to invoke explicitly; Codex
+can also invoke skills implicitly on matching tasks.
 
 ### Verify
 
@@ -65,14 +70,14 @@ codex plugin list
 
 ```bash
 codex plugin marketplace upgrade cloudblue-agent-skills
-codex plugin remove usage
-codex plugin add usage@cloudblue-agent-skills
+codex plugin remove <plugin>
+codex plugin add <plugin>@cloudblue-agent-skills
 ```
 
 ### Uninstall
 
 ```bash
-codex plugin remove usage
+codex plugin remove <plugin>
 codex plugin marketplace remove cloudblue-agent-skills
 ```
 
@@ -81,21 +86,22 @@ codex plugin marketplace remove cloudblue-agent-skills
 <details>
 <summary><strong>Cursor</strong></summary>
 
-Install with the community [`skills`](https://www.skills.sh/) CLI:
+Install with the community [`skills`](https://www.skills.sh/) CLI (it
+picks up every skill in the repo):
 
 ```bash
 npx skills add cloudblue/agent-skills -a cursor        # this workspace
 npx skills add cloudblue/agent-skills -a cursor -g     # all projects
 ```
 
-New agent chat, type `/connect-usage-converter`.
+New agent chat, type `/<skill>` (e.g. `/connect-mcp-setup`).
 
 ### Verify / Update / Uninstall
 
 ```bash
 npx skills list
-npx skills update connect-usage-converter
-npx skills remove connect-usage-converter
+npx skills update <skill>
+npx skills remove <skill>
 ```
 
 </details>
@@ -109,10 +115,11 @@ npx skills remove connect-usage-converter
 gemini extensions install https://github.com/cloudblue/agent-skills
 ```
 
-The extension loads `GEMINI.md`, which imports the full skill. `git`
+The extension loads `GEMINI.md`, which routes each request to the right
+plugin's skill via the README catalog and `connect-navigator`. `git`
 must be installed. (There is no standalone custom-command route: the
-skill spans multiple files — mappings, scripts, examples — so it can't
-be inlined into a single `.toml`.)
+skills span multiple files — workflows, mappings, scripts — so they
+can't be inlined into a single `.toml`.)
 
 ### Verify
 
@@ -143,11 +150,11 @@ The `agy` CLI installs separately from the desktop app
 
 ### Install
 
-Point `agy` at the plugin folder, not the repo root — it expects
+Point `agy` at a plugin folder, not the repo root — it expects
 `skills/` at the plugin root:
 
 ```bash
-agy plugin install https://github.com/cloudblue/agent-skills/tree/master/usage
+agy plugin install https://github.com/cloudblue/agent-skills/tree/master/<plugin>
 ```
 
 ### Verify
@@ -159,14 +166,14 @@ agy plugin list
 ### Update
 
 ```bash
-agy plugin uninstall usage
-agy plugin install https://github.com/cloudblue/agent-skills/tree/master/usage
+agy plugin uninstall <plugin>
+agy plugin install https://github.com/cloudblue/agent-skills/tree/master/<plugin>
 ```
 
 ### Uninstall
 
 ```bash
-agy plugin uninstall usage
+agy plugin uninstall <plugin>
 ```
 
 </details>
@@ -183,48 +190,48 @@ npx skills add cloudblue/agent-skills -a github-copilot        # this project
 npx skills add cloudblue/agent-skills -a github-copilot -g     # all projects
 ```
 
-Without the CLI, copy the skill folder into any directory Copilot scans
+Without the CLI, copy skill folders into any directory Copilot scans
 (`~/.copilot/skills/`, `~/.claude/skills/`, or `~/.agents/skills/`):
 
 ```bash
 git clone https://github.com/cloudblue/agent-skills
 mkdir -p ~/.copilot/skills
-cp -R agent-skills/usage/skills/connect-usage-converter ~/.copilot/skills/
+cp -R agent-skills/<plugin>/skills/<skill> ~/.copilot/skills/
 ```
 
 ### Verify / Update / Uninstall
 
-Type `/` in the chat input and confirm `connect-usage-converter`
-appears. Or `npx skills list` / `update` / `remove` as above.
+Type `/` in the chat input and confirm the skill appears. Or
+`npx skills list` / `update` / `remove` as above.
 
 </details>
 
 <details>
 <summary><strong>Zed</strong></summary>
 
-Zed's Agent reads Agent Skills natively. This skill spans multiple
-files (mappings, scripts, examples), so install by copying the folder —
-the Skills manager's "Create skill from URL" only imports a single
+Zed's Agent reads Agent Skills natively. The skills span multiple files
+(workflows, mappings, scripts), so install by copying folders — the
+Skills manager's "Create skill from URL" only imports a single
 `SKILL.md` and would miss the supporting files.
 
 ### Install
 
 ```bash
 git clone https://github.com/cloudblue/agent-skills
-cp -R agent-skills/usage/skills/connect-usage-converter ~/.config/zed/skills/
+cp -R agent-skills/<plugin>/skills/<skill> ~/.config/zed/skills/
 ```
 
-Then type `/connect-usage-converter` in the Agent Panel.
+Then type `/<skill>` in the Agent Panel.
 
 ### Verify
 
-Open the Skills manager in the Agent Panel and confirm
-`connect-usage-converter` is listed.
+Open the Skills manager in the Agent Panel and confirm the skill is
+listed.
 
 ### Update / Uninstall
 
 Re-copy the folder after `git pull`, or delete
-`~/.config/zed/skills/connect-usage-converter`.
+`~/.config/zed/skills/<skill>`.
 
 </details>
 
@@ -240,13 +247,13 @@ Pi implements the Agent Skills standard; skills are invoked as
 npx skills add cloudblue/agent-skills -a pi -y
 ```
 
-Or copy the folder into a directory Pi scans (`~/.pi/agent/skills/`,
+Or copy skill folders into a directory Pi scans (`~/.pi/agent/skills/`,
 `~/.agents/skills/`, project `.pi/skills/` or `.agents/skills/`):
 
 ```bash
 git clone https://github.com/cloudblue/agent-skills
 mkdir -p ~/.pi/agent/skills
-cp -R agent-skills/usage/skills/connect-usage-converter ~/.pi/agent/skills/
+cp -R agent-skills/<plugin>/skills/<skill> ~/.pi/agent/skills/
 ```
 
 Enable skill slash commands in Pi's `settings.json`:
@@ -255,14 +262,14 @@ Enable skill slash commands in Pi's `settings.json`:
 { "enableSkillCommands": true }
 ```
 
-Start a new session and type `/skill:connect-usage-converter`.
+Start a new session and type `/skill:<skill>`.
 
 ### Verify / Update / Uninstall
 
 ```bash
 npx skills list
-npx skills update connect-usage-converter
-npx skills remove connect-usage-converter
+npx skills update <skill>
+npx skills remove <skill>
 ```
 
 </details>
@@ -272,22 +279,22 @@ npx skills remove connect-usage-converter
 
 ### Install
 
-Copy the skill folder into Hermes' skills directory:
+Copy skill folders into Hermes' skills directory:
 
 ```bash
 git clone https://github.com/cloudblue/agent-skills
 mkdir -p ~/.hermes/skills
-cp -R agent-skills/usage/skills/connect-usage-converter ~/.hermes/skills/
+cp -R agent-skills/<plugin>/skills/<skill> ~/.hermes/skills/
 ```
 
-Type `/connect-usage-converter`.
+Type `/<skill>`.
 
 The registry route
-(`hermes skills install cloudblue/agent-skills/usage/skills/connect-usage-converter`)
+(`hermes skills install cloudblue/agent-skills/<plugin>/skills/<skill>`)
 works once skills.sh indexes this repo; until then it errors with
 "could not fetch". Taps don't apply here — `hermes skills tap` only
 scans a top-level `skills/` directory, and this repo nests skills under
-`usage/skills/`.
+`<plugin>/skills/`.
 
 ### Verify / Update / Uninstall
 
@@ -296,8 +303,7 @@ hermes skills list
 ```
 
 Update by re-copying the folder after `git pull`; remove with
-`hermes skills uninstall connect-usage-converter` or by deleting the
-folder.
+`hermes skills uninstall <skill>` or by deleting the folder.
 
 </details>
 
@@ -315,20 +321,20 @@ npx skills add cloudblue/agent-skills -g               # all projects
 npx skills add cloudblue/agent-skills -a opencode -y   # one agent only
 ```
 
-Without the CLI, copy the skill folder into whatever path your agent
-scans (`.agents/skills/` for OpenCode):
+Without the CLI, copy skill folders into whatever path your agent scans
+(`.agents/skills/` for OpenCode):
 
 ```bash
 git clone https://github.com/cloudblue/agent-skills
-cp -R agent-skills/usage/skills/connect-usage-converter ~/.agents/skills/
+cp -R agent-skills/<plugin>/skills/<skill> ~/.agents/skills/
 ```
 
 ### Verify / Update / Uninstall
 
 ```bash
 npx skills list
-npx skills update connect-usage-converter
-npx skills remove connect-usage-converter
+npx skills update <skill>
+npx skills remove <skill>
 ```
 
 </details>
@@ -343,9 +349,9 @@ local path must point at the repo root, not `.claude-plugin/`.
 
 **Skill missing after `npx skills add`.** Start a new agent chat and
 confirm the folder landed where your agent scans, with the frontmatter
-`name` matching the folder name (`connect-usage-converter`).
+`name` matching the folder name.
 
-**MCP errors on first use.** The skill converses with the Usage MCP
-server on your Connect tenant; configure the endpoint and `ApiKey`
-first — see
-[`setup.md`](usage/skills/connect-usage-converter/setup.md).
+**MCP errors on first use.** The skills converse with the Connect MCP
+server on your tenant; configure the endpoint and `ApiKey` first —
+[`connect-mcp-setup`](core/skills/connect-mcp-setup/SKILL.md) owns that
+setup and its diagnosis.
