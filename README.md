@@ -84,8 +84,6 @@ pointing at the MCP endpoint with an `ApiKey` header.
 agent-skills/
 ├── .claude-plugin/
 │   └── marketplace.json                       ← Claude Code marketplace catalog (no version)
-├── .codex-plugin/
-│   └── plugin.json                            ← Codex plugin manifest
 ├── .agents/plugins/
 │   └── marketplace.json                       ← Codex marketplace catalog
 ├── gemini-extension.json                      ← Gemini CLI extension manifest
