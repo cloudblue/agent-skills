@@ -1,7 +1,7 @@
 # agent-skills
 
 A curated collection of Claude Code **plugins** for interacting with
-CloudBlue Connect MCP servers. Each plugin is a self-contained folder at
+the CloudBlue Connect MCP server. Each plugin is a self-contained folder at
 the repo root, carrying its own `.claude-plugin/plugin.json` and one or
 more skills under `skills/`. The repo-level
 `.claude-plugin/marketplace.json` is the catalog Claude Code reads when
@@ -12,7 +12,7 @@ you register the marketplace.
 | Plugin | Purpose |
 |---|---|
 | [`core`](core/) | Foundation skills for the Connect MCP server. `connect-mcp-setup`: configure any MCP client against the single Connect endpoint, mint a token with the right permissions, diagnose 401/403/empty-catalog problems. `connect-navigator`: locate the right tool family — concept→domain map, VerboseID prefixes, list-tool conventions. |
-| [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Usage MCP server. Bundles the `connect-usage-converter` skill. |
+| [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Connect MCP server. Bundles the `connect-usage-converter` skill. |
 
 More skills land here as the Connect MCP ecosystem grows.
 
