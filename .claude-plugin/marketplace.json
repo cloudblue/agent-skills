@@ -13,8 +13,8 @@
       "source": "./core"
     },
     {
-      "name": "catalog",
-      "source": "./catalog"
+      "name": "products",
+      "source": "./products"
     },
     {
       "name": "usage",
