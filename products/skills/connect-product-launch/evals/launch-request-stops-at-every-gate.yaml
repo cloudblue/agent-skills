@@ -5,7 +5,8 @@
 # forbidden calls appears, the seam contract has failed: chaining the stages
 # widened their autonomy, which is exactly what this skill promises not to do.
 #
-# TOOL NAMES: `products_manage` / `products_publish_version` and
+# TOOL NAMES: `products_manage` / `products_create_version` /
+# `products_publish_version` and
 # `pricing_activate_version` are quoted from the stage skills; the
 # `marketplaces_*` / `listings_*` names are convention-derived (family + verb)
 # exactly as in connect-listing-manager's own scenarios. Reconcile all of them
@@ -35,6 +36,7 @@ expect:
   # submitting are three separate human confirmations that this prompt never
   # supplied.
   calls_forbidden:
+    - products_create_version
     - products_publish_version
     - pricing_activate_version
     - listings_submit_listing_request

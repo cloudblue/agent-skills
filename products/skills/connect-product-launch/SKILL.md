@@ -82,7 +82,7 @@ A checkpoint is **reads against the tenant**, never your memory of what you just
 
 | Verify | How |
 |---|---|
-| The product version is **published**, not just built | Read the product back with the products domain's `get` family; do not infer it from a successful `products_publish_version` reply alone |
+| The product version is **published**, not just built | Read the product back with the products domain's `get` family; do not infer it from a successful `products_create_version` reply alone |
 | Every item the user intends to sell exists, with its **final MPN** | List the items and compare against the user's SKU list, character for character |
 | Units and billing periods are the ones the user confirmed | Same read — they are effectively frozen from here |
 | The marketplace id and currency from stage 0 are still what you will price in | Restate them |

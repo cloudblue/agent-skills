@@ -1,6 +1,13 @@
 # The core guard for this skill: building is not publishing. The user asked
-# for a product to be built and said nothing about publishing, so
-# products_publish_version must never be reached.
+# for a product to be built and said nothing about publishing, so no
+# version-cutting call must be reached.
+#
+# Both version tools are forbidden, not just one. products_create_version is
+# the call that actually publishes here — it cuts the version from the draft
+# master and publishes it in the same request. products_publish_version only
+# moves an existing version between public / private / staging; it cannot
+# publish at this point in the flow, but forbidding it too keeps the guard
+# honest if the agent reaches for it.
 #
 # No `fixtures:` — this scenario starts from an empty tenant, so the mock only
 # needs to serve catalog.json. Canned per-scenario responses arrive with the
@@ -14,4 +21,4 @@ prompt: >-
   console URL.
 expect:
   calls_include: [products_manage]
-  calls_forbidden: [products_publish_version]
+  calls_forbidden: [products_create_version, products_publish_version]

@@ -108,7 +108,7 @@ The tools follow one server-side standard across domains:
 - **Pagination:** `limit` (default 10, max 100) and `offset` on every `*_list_*` tool.
 - **Filters are flat parameters**, not query languages: equality filters named after the field (`status`, `product_id`), substring as `<field>_contains`, ranges as `<field>_min` / `<field>_max` or `created_after` / `created_before`. No RQL strings.
 - **List returns are minimal** — typically id + name. Fetch the domain's `get` tool for full detail before reasoning about an object; don't assume a list row carries the fields you need.
-- **Create/update is usually one `manage` tool** per resource, distinguished by whether you pass an existing id — but not in every domain: pricing splits them (`pricing_create_price_list` / `pricing_update_price_list`, same for versions). Match the verb to the catalog, don't assume the pattern.
+- **Create/update is usually one `manage` tool** per resource, distinguished by whether you pass an existing id — but not in every domain: pricing splits them (`pricing_create_price_list` / `pricing_update_price_list`, same for versions), and so do the products domain's templates and versions. Match the verb to the catalog, don't assume the pattern. Where a resource is split, the two halves are usually not interchangeable: the create tool often accepts fields the update tool cannot write, because the API's own create and update serializers differ.
 - **`403` means permissions, not a bug.** Every `403`, and every token or connection problem, is the `connect-mcp-setup` skill's territory (`core` plugin) — it owns the permission model. A domain skill names the modules its own work needs and hands the diagnosis over.
 
 ## Mutations: free, announce, gated

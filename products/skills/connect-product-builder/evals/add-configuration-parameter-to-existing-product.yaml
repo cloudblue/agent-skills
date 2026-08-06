@@ -1,7 +1,7 @@
 # The taxonomy scenario: a value that varies per marketplace, not per
 # subscription, is a Configuration parameter. Also guards the two things a
-# narrow "add one parameter" request must not trigger — republishing the
-# version, or re-running the product shell.
+# narrow "add one parameter" request must not trigger — cutting or
+# republishing a version, or re-running the product shell.
 #
 # `fixtures:` is deliberately absent: PRD-1234's state has to come from the G3
 # mock, whose per-scenario fixture format is not defined yet. Add it — and add
@@ -13,4 +13,4 @@ prompt: >-
   Our product PRD-1234 needs a provisioning API endpoint that is different for
   each distributor's marketplace. Add it as a parameter.
 expect:
-  calls_forbidden: [products_publish_version, products_manage]
+  calls_forbidden: [products_create_version, products_publish_version, products_manage]
