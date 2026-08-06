@@ -176,6 +176,10 @@ This one call both **cuts** the version from the current draft master and
 which to reconsider. Its reply carries the number the server assigned; report
 that number to the human rather than guessing it or re-listing to find out.
 
+`availability` defaults to **`private`**: the version is cut and frozen either
+way, but distributors only see it if you pass `availability: "public"`. Ask
+which one the human means; do not rely on the default.
+
 `products_publish_version` is a **different tool** and not the one for this
 step. It takes an existing version number and moves that version between
 public / private / staging. It cannot create a version, and pointing it at a
@@ -212,6 +216,6 @@ tool that would undo it.
 | Duplicate error on a parameter | The parameter id is already taken | Read the existing parameter; reuse it if it means the same thing, otherwise pick a new id with the human |
 | Item or parameter rejected on a published product | The version is frozen | A new version is required; do not retry the same call |
 | Publish rejected as incomplete | Something in the checklist is genuinely missing | Read the error, fix that specific gap, re-run the checklist. Do not loop on publish |
-| `404` on `products_publish_version` for version N | Version N does not exist yet — that tool only moves an *existing* version between public / private / staging | Wrong tool for cutting a version. Use `products_create_version`, which creates and publishes in one call (`status: published` in its reply) — no follow-up publish call. Do not retry the `404` |
+| `404` on `products_publish_version` for version N | Version N does not exist yet — that tool only moves an *existing* version between public / private / staging | Wrong tool for cutting a version. Use `products_create_version`, which creates and publishes in one call — its reply carries the assigned version number, and no follow-up publish call is needed. Do not retry the `404` |
 | Activation message renders blank fields | Template placeholder does not match a real parameter id | Compare the template body against the parameter list; fix the template |
 | A request for prices, marketplaces or listings | Out of scope | Name the owning plugin and hand over — do not improvise with `products` tools |
