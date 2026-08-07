@@ -12,11 +12,7 @@ metadata:
 
 # Connect MCP Setup
 
-You are helping the user connect their MCP client to CloudBlue Connect, or
-diagnosing a connection that doesn't work. This is a configuration skill:
-the key steps — minting a token, editing client config — happen in the
-Connect UI and on the user's machine, so you guide and verify rather than
-execute. No Connect tools are needed beyond listing them to verify.
+You are helping the user connect their MCP client to CloudBlue Connect, or diagnosing a connection that doesn't work. This is a configuration skill: the key steps — minting a token, editing client config — happen in the Connect UI and on the user's machine, so you guide and verify rather than execute. No Connect tools are needed beyond listing them to verify.
 
 ## The one endpoint
 
@@ -27,13 +23,9 @@ POST https://api.connect.cloudblue.com/public/v1/mcp
 Authorization: ApiKey SU-XXXX-XXXX-XXXX:<secret>
 ```
 
-One entry in the client's MCP config exposes the whole catalog —
-roughly 100 tools spanning nine domains (pricing, fulfillments, products,
-listings, usage, helpdesk, tier accounts, marketplaces, assets).
+One entry in the client's MCP config exposes the whole catalog — roughly 100 tools spanning nine domains (pricing, fulfillments, products, listings, usage, helpdesk, tier accounts, marketplaces, assets).
 
-There are **no per-module URLs**. If a config, doc, or old example points
-at a path with a module segment after `mcp` (`/public/v1/mcp/<module>/`),
-it is stale — replace it with the single endpoint above.
+There are **no per-module URLs**. If a config, doc, or old example points at a path with a module segment after `mcp` (`/public/v1/mcp/<module>/`), it is stale — replace it with the single endpoint above.
 
 ## Mint the token
 
@@ -41,23 +33,12 @@ In the Connect UI: **Account → Tokens → Create token**.
 
 Two permission rules decide what works:
 
-1. The token must carry the **MCP** permission. Without it, *every* tool
-   call returns `403`, regardless of what else the token can do.
-2. Each tool additionally requires the permission of the **module that owns
-   its domain** — enforced by visibility, not by `403`: the gateway omits
-   the tools of unpermitted modules from the catalog. A token with MCP but
-   without Pricing sees no `pricing_*` tools at all, and calling one by
-   name returns `MCG_001` "Unknown tool". One known pairing to be aware
-   of: the `fulfillments` and `assets` domains are both covered by the
-   **Subscriptions** permission.
+1. The token must carry the **MCP** permission. Without it, *every* tool call returns `403`, regardless of what else the token can do.
+2. Each tool additionally requires the permission of the **module that owns its domain** — enforced by visibility, not by `403`: the gateway omits the tools of unpermitted modules from the catalog. A token with MCP but without Pricing sees no `pricing_*` tools at all, and calling one by name returns `MCG_001` "Unknown tool". One known pairing to be aware of: the `fulfillments` and `assets` domains are both covered by the **Subscriptions** permission.
 
-So: grant MCP plus the modules the user actually intends to work with. The
-tools visible in the catalog reflect the token's module permissions — a
-smaller-than-expected catalog usually means a narrower-than-expected token.
+So: grant MCP plus the modules the user actually intends to work with. The tools visible in the catalog reflect the token's module permissions — a smaller-than-expected catalog usually means a narrower-than-expected token.
 
-Token scoping also decides *which side* of a transaction you act as: a
-vendor-account token cannot perform provider-side actions and vice versa.
-Mint the token in the account that does the work.
+Token scoping also decides *which side* of a transaction you act as: a vendor-account token cannot perform provider-side actions and vice versa. Mint the token in the account that does the work.
 
 ## Configure the client
 
@@ -79,32 +60,21 @@ Add to `~/.mcp.json` (or the project's `.mcp.json`):
 }
 ```
 
-`.mcp.json` expands environment variables, so keep the secret out of the
-file (project configs get committed): export
-`CONNECT_API_KEY="SU-XXXX-XXXX-XXXX:<secret>"` in the shell profile
-instead of pasting the token inline.
+`.mcp.json` expands environment variables, so keep the secret out of the file (project configs get committed): export `CONNECT_API_KEY="SU-XXXX-XXXX-XXXX:<secret>"` in the shell profile instead of pasting the token inline.
 
-Restart Claude Code, then check with `/mcp` — `connect` should appear in
-the server list.
+Restart Claude Code, then check with `/mcp` — `connect` should appear in the server list.
 
 ### Claude Desktop
 
-The Developer config file only accepts local stdio servers — the HTTP
-entry above will not work there. Use **Settings → Connectors → Add custom
-connector** instead: paste the endpoint URL and add a request header
-`Authorization: ApiKey SU-XXXX-XXXX-XXXX:<secret>`.
+The Developer config file only accepts local stdio servers — the HTTP entry above will not work there. Use **Settings → Connectors → Add custom connector** instead: paste the endpoint URL and add a request header `Authorization: ApiKey SU-XXXX-XXXX-XXXX:<secret>`.
 
 ### Any other MCP client
 
-Anything speaking standard MCP HTTP transport works: JSON-RPC 2.0
-(`initialize`, `tools/list`, `tools/call`) POSTed to the endpoint with the
-`Authorization: ApiKey <token>` header.
+Anything speaking standard MCP HTTP transport works: JSON-RPC 2.0 (`initialize`, `tools/list`, `tools/call`) POSTed to the endpoint with the `Authorization: ApiKey <token>` header.
 
 ## Verify
 
-Ask the agent to list the Connect tools. A healthy setup returns a catalog
-whose domains match the token's module permissions. If the user's token
-carries every module, expect on the order of 100 tools.
+Ask the agent to list the Connect tools. A healthy setup returns a catalog whose domains match the token's module permissions. If the user's token carries every module, expect on the order of 100 tools.
 
 ## Diagnose
 
@@ -123,6 +93,4 @@ Work top-down; each symptom has one dominant cause.
 
 ## Non-goals
 
-What the tools do, and how to sequence them, is out of scope — that is the
-job of the domain skills (usage conversion, pricing, products, …). This
-skill ends when `tools/list` returns the catalog the token should see.
+What the tools do, and how to sequence them, is out of scope — that is the job of the domain skills (usage conversion, pricing, products, …). This skill ends when `tools/list` returns the catalog the token should see.
