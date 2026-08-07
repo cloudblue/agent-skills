@@ -36,7 +36,7 @@ It also holds the conventions every domain skill defers to: how tool names are r
 | `pricing` | price lists, versions, price points, adjustments |
 | `fulfillments` | fulfillment requests: creation + lifecycle transitions |
 | `products` | products, items, parameters, templates |
-| `listings` | listing requests (vendor ↔ distributor publication) |
+| `listings` | listing requests (vendor → distributor publication) |
 | `usage` | usage files and records (pay-per-use reporting) |
 | `helpdesk` | support cases |
 | `tier_accounts` | tier accounts and tier account requests |
