@@ -102,7 +102,7 @@ If the user has not asked to publish, stop after Phase 4 and report the product 
 ## Non-goals
 
 - **No pricing.** Price lists, versions, price points and rate cards belong to the `pricing` plugin. An item's *existence* is this skill's job; what it costs is not. Do not let a request for "add the price" pull you into the pricing domain — hand it over.
-- **No listings or marketplaces.** Publishing a product version is not publishing it to a marketplace. Listing requests, marketplace selection and the vendor↔distributor approval flow belong to the `listings` plugin.
+- **No listings or marketplaces.** Publishing a product version is not publishing it to a marketplace. Listing requests, marketplace selection and the vendor → distributor approval flow belong to the `listings` plugin.
 - **No fulfillment processing.** Designing the parameters is here; approving, inquiring or failing actual requests is the `fulfillment` plugin's.
 - **No usage reporting.** Converting and submitting usage files is the `usage` plugin's. This skill only ensures items exist with the MPNs that usage rows will match on.
 - **No product deletion or teardown.** If the user wants a product removed, say what it would take and let them do it deliberately; this skill does not reach for destructive tools.
