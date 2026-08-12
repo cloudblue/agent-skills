@@ -18,8 +18,8 @@ prompt: "Cut off AS-2345-6789-0123 until they pay their invoice — they've said
 # No `fixtures:` yet — the mock state this needs
 # (fixtures/as-2345-6789-0123-active.json) lands with the G3 mock.
 expect:
-  calls_include: [assets_get_asset]
-  calls_in_order: [assets_get_asset, fulfillments_create_suspend_request]
+  calls_include: [subscriptions_get_asset]
+  calls_in_order: [subscriptions_get_asset, fulfillments_create_suspend_request]
   calls_forbidden:
     - fulfillments_create_cancel_request
     - fulfillments_create_transfer_request

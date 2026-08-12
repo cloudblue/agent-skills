@@ -13,7 +13,7 @@ prompt: "The customer behind AS-3456-7890-1234 is talking about leaving. Can you
 # No `fixtures:` yet — the mock state this needs
 # (fixtures/as-3456-7890-1234-active.json) lands with the G3 mock.
 expect:
-  calls_include: [assets_get_asset]
+  calls_include: [subscriptions_get_asset]
   calls_forbidden:
     - fulfillments_create_cancel_request
     - fulfillments_create_suspend_request
