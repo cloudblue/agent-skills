@@ -12,45 +12,23 @@ metadata:
 
 # Connect Request Triage
 
-You are working the **inbound** side of Connect fulfillment: requests arrive
-in your queue and you decide what happens to each one. This is the vendor's
-seat. The opposite side — creating outbound changes against a subscription
-you own as distributor or reseller — is the `connect-subscription-ops`
-skill in this same plugin.
+You are working the **inbound** side of Connect fulfillment: requests arrive in your queue and you decide what happens to each one. This is the vendor's seat. The opposite side — creating outbound changes against a subscription you own as distributor or reseller — is the `connect-subscription-ops` skill in this same plugin.
 
-**Autonomy.** Reading a request, diagnosing it and recommending a transition
-is **free** — do all of it without asking. Every transition itself is
-**outward-facing**: the customer sees the result and it is commercially
-binding, so every transition is **gated** (`connect-navigator`'s rungs). You
-present the recommendation and wait. The one exception is a user who has
-already named the transition ("approve PR-1234") — then read the request
-first, confirm the evidence supports what they asked for, say so, and proceed.
+**Autonomy.** Reading a request, diagnosing it and recommending a transition is **free** — do all of it without asking. Every transition itself is **outward-facing**: the customer sees the result and it is commercially binding, so every transition is **gated** (`connect-navigator`'s rungs). You present the recommendation and wait. The one exception is a user who has already named the transition ("approve PR-1234") — then read the request first, confirm the evidence supports what they asked for, say so, and proceed.
 
 ## Before you start
 
-Reading the *product's* parameter definitions means the `products` domain and
-the **Products** module permission, which is a different plugin. If the token
-doesn't carry it, report the parameter's meaning as unknown rather than
-guessing at it.
+Reading the *product's* parameter definitions means the `products` domain and the **Products** module permission, which is a different plugin. If the token doesn't carry it, report the parameter's meaning as unknown rather than guessing at it.
 
 ## Tool names: match on the verb
 
-This skill is written in **verbs** — see `connect-navigator`, Shared
-conventions. Read each transition tool's description **before** the first
-call in a session: the required arguments differ per transition (a reason
-string, a list of parameters, an effective date), and getting one wrong is a
-failed mutation against a live request.
+This skill is written in **verbs** — see `connect-navigator`, Shared conventions. Read each transition tool's description **before** the first call in a session: the required arguments differ per transition (a reason string, a list of parameters, an effective date), and getting one wrong is a failed mutation against a live request.
 
 ## Read the request before you judge it
 
-1. **Get the request.** Never triage from a list row — list returns are
-   minimal (id, status, type). Fetch the request itself.
-2. **Note four things:** its **type** (purchase / change / cancel /
-   suspend / resume / adjustment / …), its **status**, the **subscription**
-   (`AS-…`) and product it affects, and its **parameters**.
-3. **Read the subscription** (`assets`, read-only) when the request's own
-   payload doesn't explain it — current items and quantities, current
-   parameter values, current status.
+1. **Get the request.** Never triage from a list row — list returns are minimal (id, status, type). Fetch the request itself.
+2. **Note four things:** its **type** (purchase / change / cancel / suspend / resume / adjustment / …), its **status**, the **subscription** (`AS-…`) and product it affects, and its **parameters**.
+3. **Read the subscription** (`assets`, read-only) when the request's own payload doesn't explain it — current items and quantities, current parameter values, current status.
 4. Only then choose.
 
 ## Who has to act next
@@ -67,9 +45,7 @@ Status answers "is this even mine?" before any transition is considered.
 | `revoking` | the platform | wait |
 | `approved` / `failed` / `revoked` | nobody | terminal; a new request is the only way forward |
 
-Statuses are the product's, not this skill's. If a request shows a status
-that isn't in this table, read the request payload and the transition tool
-descriptions rather than forcing it into a row.
+Statuses are the product's, not this skill's. If a request shows a status that isn't in this table, read the request payload and the transition tool descriptions rather than forcing it into a row.
 
 ## Choosing the transition
 
@@ -86,102 +62,46 @@ For a `pending` request, the evidence picks the verb:
 
 Two more the catalog exposes and this skill does not route for you:
 
-- **`confirm`** promotes a `draft` request into the fulfilling side's
-  queue. It is **not** a synonym for `approve` — it does not fulfil
-  anything, and it normally belongs to whoever created the request
-  (`connect-subscription-ops`). Read its tool description before using it.
-- The domain carries a small number of transitions beyond the ones named
-  here (assignment and scheduling companions). Enumerate them from the
-  catalog when a request doesn't fit any row above.
+- **`confirm`** promotes a `draft` request into the fulfilling side's queue. It is **not** a synonym for `approve` — it does not fulfil anything, and it normally belongs to whoever created the request (`connect-subscription-ops`). Read its tool description before using it.
+- The domain carries a small number of transitions beyond the ones named here (assignment and scheduling companions). Enumerate them from the catalog when a request doesn't fit any row above.
 
-**Never approve to make a stuck request go away.** Approving delivers the
-order: it activates entitlements and starts billing. If you cannot say what
-the customer receives, you cannot approve.
+**Never approve to make a stuck request go away.** Approving delivers the order: it activates entitlements and starts billing. If you cannot say what the customer receives, you cannot approve.
 
-**Prefer `inquire` over `fail` whenever the blocker is data.** `fail` is for
-"this can never work", not "this is missing something".
+**Prefer `inquire` over `fail` whenever the blocker is data.** `fail` is for "this can never work", not "this is missing something".
 
 ## Justify, then wait
 
-Every recommendation you present contains all six of these. If you cannot
-fill one in, you are not ready to recommend:
+Every recommendation you present contains all six of these. If you cannot fill one in, you are not ready to recommend:
 
 1. The request — id, type, current status, how long it has been there.
 2. What it affects — subscription `AS-…`, product, items and quantities.
-3. The evidence — the specific parameter, item, quantity, or account fact
-   that decides it. Quote the value you read; don't paraphrase.
+3. The evidence — the specific parameter, item, quantity, or account fact that decides it. Quote the value you read; don't paraphrase.
 4. The transition you recommend.
-5. **Why not the alternatives** — explicitly why not `approve` and why not
-   `fail`, since those are the two irreversible ones.
+5. **Why not the alternatives** — explicitly why not `approve` and why not `fail`, since those are the two irreversible ones.
 6. What the customer sees next, and who is then blocked.
 
 Then state the mutation and stop:
 
-> This will call the `fulfillments` **inquire** transition on PR-1234-5678,
-> flagging the `domain_name` ordering parameter. The request leaves our
-> queue and the customer is notified they must supply a value. Confirm and
-> I'll do it.
+> This will call the `fulfillments` **inquire** transition on PR-1234-5678, flagging the `domain_name` ordering parameter. The request leaves our queue and the customer is notified they must supply a value. Confirm and I'll do it.
 
-One confirmation can cover a set, but the set has to be enumerated. If ten
-requests need the same transition, present all ten with their evidence and ask
-once, naming every request that the yes covers. An eleventh found afterwards
-gets its own ask.
+One confirmation can cover a set, but the set has to be enumerated. If ten requests need the same transition, present all ten with their evidence and ask once, naming every request that the yes covers. An eleventh found afterwards gets its own ask.
 
 ## Resolving `inquiring`
 
-The question is always "which parameter, and what does a good value look
-like". Work it in this order:
+The question is always "which parameter, and what does a good value look like". Work it in this order:
 
-1. **Get the request** and read its parameters. The one being asked for
-   shows an empty value, or carries the error/justification text set by
-   whoever inquired. That text is the answer most of the time — surface it
-   verbatim.
-2. **If nothing is flagged**, compare the request's parameters against the
-   product's parameter definitions (`products` domain) and report which
-   required ones are unset.
-3. **Check the phase.** Only **ordering** parameters are the customer's to
-   fill. **Fulfillment** parameters are the vendor's own output — if the
-   blocker is a fulfillment parameter, inquiring was the wrong transition
-   and the fix is on your side. **Configuration** parameters aren't part of
-   a request at all.
-4. **Report** the parameter's name and title, its phase, its constraints,
-   and an example of a valid value.
+1. **Get the request** and read its parameters. The one being asked for shows an empty value, or carries the error/justification text set by whoever inquired. That text is the answer most of the time — surface it verbatim.
+2. **If nothing is flagged**, compare the request's parameters against the product's parameter definitions (`products` domain) and report which required ones are unset.
+3. **Check the phase.** Only **ordering** parameters are the customer's to fill. **Fulfillment** parameters are the vendor's own output — if the blocker is a fulfillment parameter, inquiring was the wrong transition and the fix is on your side. **Configuration** parameters aren't part of a request at all.
+4. **Report** the parameter's name and title, its phase, its constraints, and an example of a valid value.
 
-Do not invent an ordering parameter's value on the customer's behalf —
-answering is the counterparty's action, and waiting on it is a legitimate
-resting state for a request. Say so plainly instead of looking for a
-transition that makes the wait disappear. Writing a value the customer
-*did* give (relayed by the user) is different — see below, and treat it
-as a gated mutation like any other write.
+Do not invent an ordering parameter's value on the customer's behalf — answering is the counterparty's action, and waiting on it is a legitimate resting state for a request. Say so plainly instead of looking for a transition that makes the wait disappear. Writing a value the customer *did* give (relayed by the user) is different — see below, and treat it as a gated mutation like any other write.
 
-**How the answer actually arrives.** The customer's channel is the
-request's activation form (the `params_form_url` on the inquiring
-request — the storefront re-sends it), not any vendor API. On the vendor
-side, the fulfillments domain carries a request-parameter **update** tool
-(a restricted write on the request itself): use it to fill
-fulfillment-phase parameters before approving, and — when the user relays
-a customer's answer explicitly — to write the ordering value they gave
-you. Parameter writes are only accepted for products with the *inquiring
-validation* capability; without it the API answers `REQ_001` ("Only
-pending, draft or inquiring Fulfillments with enabled validation
-capability can be updated"), and the customer's form is the only channel
-left — say so instead of retrying. On older catalogs the tool is absent
-altogether; the same answer applies.
+**How the answer actually arrives.** The customer's channel is the request's activation form (the `params_form_url` on the inquiring request — the storefront re-sends it), not any vendor API. On the vendor side, the fulfillments domain carries a request-parameter **update** tool (a restricted write on the request itself): use it to fill fulfillment-phase parameters before approving, and — when the user relays a customer's answer explicitly — to write the ordering value they gave you. Parameter writes are only accepted for products with the *inquiring validation* capability; without it the API answers `REQ_001` ("Only pending, draft or inquiring Fulfillments with enabled validation capability can be updated"), and the customer's form is the only channel left — say so instead of retrying. On older catalogs the tool is absent altogether; the same answer applies.
 
-**Reading the diagnosis.** The fulfillments domain's request-parameter
-**read** tool carries each parameter's `value`, `value_error` and whether
-it is required — that is the diagnosis surface. (The plain request read
-deliberately omits parameters, and the subscription-side parameter read
-can omit `value_error`.) If the catalog lacks the parameter read, say
-which parameter is empty-and-required instead of guessing at the error
-text.
+**Reading the diagnosis.** The fulfillments domain's request-parameter **read** tool carries each parameter's `value`, `value_error` and whether it is required — that is the diagnosis surface. (The plain request read deliberately omits parameters, and the subscription-side parameter read can omit `value_error`.) If the catalog lacks the parameter read, say which parameter is empty-and-required instead of guessing at the error text.
 
-**`value_error` is sticky.** Writing a value does not clear the
-parameter's `value_error`, and neither does `pend` — the text can survive
-all the way past `approve`. Read it as "what was asked at some point",
-never as "still blocked": the live signal is the request's `status` plus
-whether the value is now present. A diagnosis that says "admin_email is
-still flagged" about an approved request has been fooled by exactly this.
+**`value_error` is sticky.** Writing a value does not clear the parameter's `value_error`, and neither does `pend` — the text can survive all the way past `approve`. Read it as "what was asked at some point", never as "still blocked": the live signal is the request's `status` plus whether the value is now present. A diagnosis that says "admin_email is still flagged" about an approved request has been fooled by exactly this.
 
 ## When triage says the problem isn't the request
 
@@ -195,11 +115,7 @@ still flagged" about an approved request has been fooled by exactly this.
 
 ## Non-goals
 
-- **Creating requests.** Change, cancel, suspend, resume, renew,
-  adjustment and transfer are outbound actions — `connect-subscription-ops`.
-- **Product content.** Parameter and template design belongs to the
-  `products` domain, not here. This skill reads them to explain a blocker.
-- **Commercial policy.** Whether a customer *should* get an exception, a
-  refund, or a manual approval is the human's call. You supply the
-  evidence and the consequence; you don't decide the business outcome.
+- **Creating requests.** Change, cancel, suspend, resume, renew, adjustment and transfer are outbound actions — `connect-subscription-ops`.
+- **Product content.** Parameter and template design belongs to the `products` domain, not here. This skill reads them to explain a blocker.
+- **Commercial policy.** Whether a customer *should* get an exception, a refund, or a manual approval is the human's call. You supply the evidence and the consequence; you don't decide the business outcome.
 - **Support cases.** A partner conversation about a request is `helpdesk`.
