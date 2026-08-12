@@ -102,7 +102,7 @@ Going live is **outward-facing** — it changes what partners are charged — so
 ## Non-goals
 
 - **Commercial policy.** What the price *should be* — margins, discount ladders, whether to pass a vendor increase through — is the user's decision. Compute what they ask for; flag anything that looks like a fat-finger (an order-of-magnitude jump, a negative price), then stop.
-- **Product items.** Adding, renaming, or re-unitizing items, or changing item parameters, belongs to **`connect-product-builder`** (`catalog` plugin). A rate-card row with no matching price point is a catalog gap: report it, do not attempt to create the item.
+- **Product items.** Adding, renaming, or re-unitizing items, or changing item parameters, belongs to **`connect-product-builder`** (`products` plugin). A rate-card row with no matching price point is a catalog gap: report it, do not attempt to create the item.
 - **Listing and marketplace publication.** Making the priced product purchasable is the `listings` plugin's job.
 - **Usage and billing.** Reporting consumption against these prices is `connect-usage-converter` (`usage` plugin). Invoices are not in the MCP catalog at all.
 - **Tool signatures.** Parameter names and shapes come from the catalog, not from this skill.

@@ -38,7 +38,7 @@ mapping bug, not a price change. Compare them; do not write them.
 ## Rows that must not become updates
 
 - **SKU matches no point** — the item is not in this price list. Report it;
-  adding items is `connect-product-builder`'s job (`catalog` plugin).
+  adding items is `connect-product-builder`'s job (`products` plugin).
 - **Price identical to the current point value** — drop it. Rate cards are
   mostly unchanged month over month, and dropping these is what keeps the
   call count workable.

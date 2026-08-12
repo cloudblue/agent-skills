@@ -97,7 +97,7 @@ python scripts/build_price_point_updates.py \
 
 4. Read the report before applying anything:
 
-- **Unmatched SKUs** — the vendor sells something this price list has no item for. Report them to the user; creating the item is `connect-product-builder`'s job (`catalog` plugin), not yours.
+- **Unmatched SKUs** — the vendor sells something this price list has no item for. Report them to the user; creating the item is `connect-product-builder`'s job (`products` plugin), not yours.
 - **Unchanged rows** — dropped from the output. A rate card is usually mostly unchanged; this is what keeps the call count sane.
 - **Suspicious deltas** — order-of-magnitude jumps, sign flips, zeros. Surface each one; do not apply them silently.
 
