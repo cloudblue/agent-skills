@@ -108,7 +108,7 @@ Do not invent an ordering parameter's value on the customer's behalf — answeri
 | Symptom | Actual cause | Where it lives |
 |---|---|---|
 | Request has been `inquiring` for days with nobody reacting | the inquire named no parameter, so the customer has nothing to act on | `pend` it, then re-inquire with specifics |
-| `approve` is refused or the subscription doesn't activate | the product's fulfillment side is incomplete — activation template or fulfillment parameters | `products` domain (`catalog` plugin) |
+| `approve` is refused or the subscription doesn't activate | the product's fulfillment side is incomplete — activation template or fulfillment parameters | `products` domain (`products` plugin) |
 | Reads work, every transition returns `403` | token account is on the wrong side of the transaction | `connect-mcp-setup` (`core` plugin) |
 | Stuck in `tiers_setup` | tier account data incomplete | `tier_accounts` domain — see `connect-navigator`, Tier vocabulary |
 | Queue full of near-identical `pending` purchases | upstream commerce is retrying; triaging them one by one is the wrong fix | escalate, don't approve the duplicates |
