@@ -102,6 +102,20 @@ def main() -> int:
     marketplace = json.loads(
         (REPO / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8")
     )
+    # The Codex catalog is a hand-maintained mirror of the Claude one; a plugin
+    # registered in only one of them is invisible to that ecosystem.
+    codex = json.loads(
+        (REPO / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8")
+    )
+    claude_plugins = sorted(p["name"] for p in marketplace["plugins"])
+    codex_plugins = sorted(p["name"] for p in codex["plugins"])
+    if claude_plugins != codex_plugins:
+        errors.append(
+            f".agents/plugins/marketplace.json lists {codex_plugins} but "
+            f".claude-plugin/marketplace.json lists {claude_plugins} — register "
+            f"the plugin in both catalogs"
+        )
+
     readme = (REPO / "README.md").read_text(encoding="utf-8")
     for plugin in marketplace["plugins"]:
         if f"[`{plugin['name']}`]" not in readme:
