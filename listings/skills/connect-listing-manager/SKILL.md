@@ -117,7 +117,7 @@ Report the diagnosis as: **state → owning side → the one action that unblock
 
 ## Non-goals
 
-- **Creating the product**, its items, parameters or templates — that is `connect-product-builder` (`catalog` plugin). This skill assumes a published product version exists.
+- **Creating the product**, its items, parameters or templates — that is `connect-product-builder` (`products` plugin). This skill assumes a published product version exists.
 - **Creating or activating price lists** — `connect-pricelist-manager` (`pricing` plugin). It checks that pricing is in place and complains if it isn't; it does not fix it.
 - **Approving on the counterparty's behalf.** Approval is the other side's action and often the other side's account. When the workflow needs them, the skill's job is to say so and stop. One exception: a counterparty credential being *available* is not permission, but if the operator explicitly confirms both accounts are theirs and directs the transition by name, the distributor-side actions become ordinary gated steps in the same conversation — announced and confirmed like any other, with the token side recorded per call.
 - **Contracts, agreements, offers and packs.** No MCP tools exist for them (`connect-navigator`); they are UI/REST work.
