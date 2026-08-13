@@ -17,6 +17,10 @@
       "source": "./products"
     },
     {
+      "name": "pricing",
+      "source": "./pricing"
+    },
+    {
       "name": "usage",
       "source": "./usage"
     }

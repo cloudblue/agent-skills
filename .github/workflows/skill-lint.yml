@@ -29,3 +29,5 @@ jobs:
         run: |
           python3 scripts/check_tool_names.py --self-test
           python3 scripts/check_tool_names.py
+      - name: Skill script self-tests
+        run: python3 pricing/skills/connect-pricelist-manager/scripts/build_price_point_updates.py --self-test

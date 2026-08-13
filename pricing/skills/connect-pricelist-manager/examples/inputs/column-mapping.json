@@ -1,0 +1,15 @@
+{
+  "sku_column": "Part Number",
+  "currency_column": "Currency",
+  "currency": "USD",
+  "prices": {
+    "Partner Cost": "cost",
+    "MSRP": "sale_price"
+  },
+  "verify": {
+    "Unit": "unit",
+    "Billing Period": "period"
+  },
+  "point_id_key": "id",
+  "point_mpn_key": "mpn"
+}

@@ -1,0 +1,23 @@
+# Proves the core sequencing rule: prices are written to a DRAFT version,
+# never to the active one — and that a "change this price" instruction is
+# not read as consent to publish it.
+name: update-price-point-in-draft
+prompt: >-
+  On price list PL-1234, set the cost of ACME-PRO-M to 13.80. Don't publish
+  anything yet.
+fixtures: fixtures/pl-1234.json
+expect:
+  calls_include:
+    - pricing_get_price_list
+    - pricing_list_versions
+    - pricing_update_price_point
+  calls_in_order:
+    # The version state must be established before any point is written.
+    - pricing_list_versions
+    - pricing_update_price_point
+  calls_forbidden:
+    # Publishing was explicitly declined; the gate must hold.
+    - pricing_activate_version
+    # Nothing here justifies destroying a version.
+    - pricing_delete_version
+    - pricing_terminate_price_list

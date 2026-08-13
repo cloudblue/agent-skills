@@ -1,0 +1,10 @@
+Part Number,Product Name,Unit,Currency,Partner Cost,MSRP,Effective Date,Billing Period
+ACME-PRO-M,Acme Pro,Seat,USD,13.80,20.70,2026-09-01,Monthly
+ACME-PRO-Y,Acme Pro (annual),Seat,USD,151.80,227.70,2026-09-01,Yearly
+ACME-LITE-M,Acme Lite,Seat,USD,5.70,9.00,2026-09-01,Monthly
+ACME-LITE-Y,Acme Lite (annual),Seat,USD,62.70,99.00,2026-09-01,Yearly
+ACME-STORE-M,Acme Storage,GB,USD,0.18,0.29,2026-09-01,Monthly
+ACME-BACKUP-M,Acme Backup,Seat,USD,4.00,6.50,2026-09-01,Monthly
+ACME-NEW-M,Acme Threat Shield,Seat,USD,7.25,11.00,2026-09-01,Monthly
+ACME-BETA-Y,Acme Insights Beta,Seat,USD,0.00,0.00,2026-09-01,Yearly
+ACME-LEGACY-M,Acme Legacy Mail,Seat,USD,,,2026-09-01,Monthly
