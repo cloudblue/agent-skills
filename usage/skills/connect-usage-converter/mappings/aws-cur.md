@@ -1,6 +1,6 @@
 # AWS CUR → Connect Usage File — Field Mapping
 
-> **Quick reference.** The authoritative version lives on the Connect MCP server — call `get_vendor_cookbook(vendor="aws-cur")` for the up-to-date copy. Use this file for at-a-glance lookups while reasoning about a conversion.
+> **Quick reference.** The authoritative version lives on the Connect MCP server — call `usage_get_vendor_cookbook(vendor="aws-cur")` for the up-to-date copy. Use this file for at-a-glance lookups while reasoning about a conversion.
 
 AWS records are treated as **dynamic items** — `item_name` / `item_unit` / `item_mpn` / `item_precision` are populated on every row so Connect can register items it hasn't seen before. The per-row hourly granularity from CUR is folded into `record_note` for traceability; the time fields hold the file-level billing window.
 
@@ -27,7 +27,7 @@ AWS records are treated as **dynamic items** — `item_name` / `item_unit` / `it
 | `category_id` | `AWS.{product_product_name}` for each distinct `product_product_name` seen in records |
 | `category_name` | `product_product_name` |
 | `category_description` | e.g. `"AWS {product_product_name} usage"` |
-| **Usage File header** (`manage_usage_file` parameters) | |
+| **Usage File header** (`usage_manage_file` parameters) | |
 | `name` | caller's choice, e.g. `"AWS CUR {year}-{month}"` |
 | `product_id` | caller-supplied (the Connect product representing AWS) |
 | `contract_id` | caller-supplied (partner's distribution contract) |

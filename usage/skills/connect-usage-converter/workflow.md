@@ -24,7 +24,7 @@ loudly without these.
 ## Step 1 — Fetch the general guide
 
 ```
-get_conversion_guide()
+usage_get_conversion_guide()
 ```
 
 Returns markdown describing Connect's column model, period semantics,
@@ -34,7 +34,7 @@ this as authoritative.
 ## Step 2 — Fetch the vendor cookbook (if known)
 
 ```
-get_vendor_cookbook(vendor="aws-cur")          # or microsoft-nce / adobe-invoice
+usage_get_vendor_cookbook(vendor="aws-cur")          # or microsoft-nce / adobe-invoice
 ```
 
 Returns the per-vendor column-mapping rules. If the source vendor is
@@ -44,7 +44,7 @@ references plus the general guide for inference.
 ## Step 3 — Fetch the target schema
 
 ```
-describe_product_usage_schema(product_id="PRD-DEMO")
+usage_describe_product_schema(product_id="PRD-DEMO")
 ```
 
 Returns the exact column set for the records sheet, plus example row
@@ -100,11 +100,18 @@ Apply vendor-specific filtering and splitting:
   `start_time_utc` / `end_time_utc` to the file's billing-month bounds.
 - **Adobe:** drop `CANCELLATION` rows. Use `Ext Price` (pre-tax invoice
   currency), not `Line Total Amount` or `Extended Price Local`.
+- **Source carries no Connect-native identifier at all** (internal exports,
+  ad-hoc spreadsheets): resolve the target asset yourself before emitting —
+  `subscriptions_list` filtered by the file's contract and product, then
+  `subscriptions_get_items` to confirm the PPU item's MPN is on it. One
+  `active` candidate → use its `asset.id`. Several → ask the user which,
+  with the candidates listed; never guess an `asset_search_criteria` against
+  a parameter that isn't registered on the product.
 
 ## Step 5 — Dry-run validate
 
 ```
-validate_usage_payload(product_id="PRD-DEMO", rows=<list-of-dicts>)
+usage_validate_payload(product_id="PRD-DEMO", rows=<list-of-dicts>)
 ```
 
 The endpoint accepts at most 1000 rows per call and rejects larger
@@ -171,17 +178,20 @@ category_id, category_name, category_description
 ## Step 7 — Create the draft
 
 ```
-manage_usage_file(
+usage_manage_file(
     name="AWS CUR 2026-05",
     product_id="PRD-DEMO",
     contract_id="CRD-DEMO",
     period_from="2026-05-01T00:00:00Z",
     period_to="2026-05-31T23:59:59Z",
     currency="USD",
-    external_id="CUR-554027867388-2026-05",   # optional traceability
-    note="Vendor: AWS, account 554027867388"  # optional free text
+    external_id="CUR-554027867388-2026-05"   # optional traceability
 )
 ```
+
+`note` is **update-only** — the create call rejects it. To attach free text,
+create first, then call `usage_manage_file` again with the returned
+`usage_file_id` and the `note`.
 
 Response includes the new `usage_file_id` (`UF-…`). Hold onto it for the
 rest of the chain.
@@ -199,7 +209,7 @@ with open("usage.xlsx", "rb") as f:
 Then:
 
 ```
-upload_usage_file(
+usage_upload_file(
     usage_file_id="UF-2026-05-XXXX-YYYY",
     file_base64=b64,
     filename="aws-cur-2026-05.xlsx"
@@ -215,21 +225,33 @@ content that can be stripped before encoding.
 ## Step 9 — Poll for status
 
 ```
-get_usage_file(usage_file_id="UF-…")
+usage_get_file(usage_file_id="UF-…")
 ```
 
-Look at `status`. Possible terminal-for-this-step outcomes:
+Look at `status` **and the `records` counters together**. Possible
+terminal-for-this-step outcomes:
 
-- `uploaded` → file passed processing, ready to submit. Proceed to step 10.
+- `ready` with `records.valid > 0` (a `processed_file_uri` appears on the
+  file at the same moment) → file passed processing, safe to submit.
+  Proceed to step 10.
 - `invalid` → row-level errors surfaced. Go to step 9a.
 
-`processing` is transient (polling step). `ready` means the file is still
-in draft and the upload didn't take.
+`processing` is transient (polling step), and so is `uploaded` — it means
+the upload landed but server-side processing hasn't finished; keep polling.
+Submit is only accepted from `ready`.
+
+**`uploaded` with records stuck at 0/0/0** (and zero validation errors) is a
+distinct failure: the upload landed but server-side parsing never ran or
+never finished. Nothing on the vendor side revives that file —
+`usage_reprocess_file` is a provider-side tool (access denied), and both
+re-upload and delete are refused once the file is wedged in this state. The
+recovery path is to create a **fresh** usage file (step 7) and upload there;
+report the stuck file id to the provider/administrator instead of looping.
 
 ### Step 9a — Inspect and fix validation errors
 
 ```
-get_usage_file_validation_errors(usage_file_id="UF-…", limit=50)
+usage_get_file_validation_errors(usage_file_id="UF-…", limit=50)
 ```
 
 The response shape is
@@ -252,26 +274,35 @@ Surface the errors to the user in a readable summary. Common patterns:
   parameter name is right.
 
 Fix in the source rows, rebuild the XLSX, re-upload (Step 8). Repeat until
-`status = uploaded`.
+`status = ready`. Re-uploading to an `invalid` file is the supported path —
+the platform takes it back through `uploading → uploaded → processing`.
 
-## Step 10 — Submit
+## Step 10 — Submit (GATED)
+
+This is the **outward-facing** step and the only gated one in the workflow.
+Before calling it, put in front of the user: the usage file id, the product and
+contract, the billing period, the row count, and the total amount per currency.
+Then wait for a yes. See the Autonomy table in [`SKILL.md`](SKILL.md#autonomy).
 
 ```
-submit_usage_file(usage_file_id="UF-…")
+usage_submit_file(usage_file_id="UF-…")
 ```
 
 Transitions the file to `pending` — the provider sees it now and can
 accept or reject. The vendor leg of the workflow is complete.
 
+A rejection is not a rollback: the provider has already read the file, and
+fixing it means another submission with its own gate.
+
 ## Step 11 (provider side, separate session) — Accept / reject
 
 Out of scope for the vendor agent. The provider's agent uses:
 
-- `accept_usage_file(usage_file_id, acceptance_note)` — moves to
+- `usage_accept_file(usage_file_id, acceptance_note)` — moves to
   `accepted`, triggers record processing.
-- `reject_usage_file(usage_file_id, rejection_note)` — moves to
+- `usage_reject_file(usage_file_id, rejection_note)` — moves to
   `rejected`, surfaces the reason to the vendor for fix-and-resubmit.
-- `upload_reconciliation_file(...)` then `close_usage_file(...)` — closes
+- `usage_upload_reconciliation_file(...)` then `usage_close_file(...)` — closes
   the billing cycle.
 
 ## Error handling shortcuts
@@ -293,10 +324,10 @@ to expect from which call saves the agent from guess-and-parse loops.
 
 ### Write / transition tools
 
-`manage_usage_file`, `upload_usage_file`, `submit_usage_file`,
-`accept_usage_file`, `reject_usage_file`, `close_usage_file`,
-`delete_usage_file`, `reprocess_usage_file`, `upload_reconciliation_file`,
-`close_usage_record`.
+`usage_manage_file`, `usage_upload_file`, `usage_submit_file`,
+`usage_accept_file`, `usage_reject_file`, `usage_close_file`,
+`usage_delete_file`, `usage_reprocess_file`, `usage_upload_reconciliation_file`,
+`usage_close_record`.
 
 ```json
 {
@@ -310,7 +341,7 @@ On failure: `{"success": false, "message": "<reason>"}` (no `id`).
 
 ### List tools
 
-`list_usage_files`, `list_usage_records`.
+`usage_list_files`, `usage_list_records`.
 
 ```json
 {
@@ -329,8 +360,8 @@ to fetch full details.
 
 ### Get tools
 
-`get_usage_file`, `get_usage_record`, `get_product_usage_template`,
-`describe_product_usage_schema`.
+`usage_get_file`, `usage_get_record`, `usage_get_product_template`,
+`usage_describe_product_schema`.
 
 These return the **raw API response** (full resource JSON), not an envelope.
 Shape depends on the resource — inspect the response keys directly. On
@@ -338,7 +369,7 @@ failure they fall back to `{"success": false, "message": "<reason>"}`.
 
 ### Validation-errors tool
 
-`get_usage_file_validation_errors`.
+`usage_get_file_validation_errors`.
 
 ```json
 {
@@ -363,7 +394,7 @@ and re-upload after fixing the dominant failure patterns.
 
 ### Conversion-preflight tool
 
-`validate_usage_payload`.
+`usage_validate_payload`.
 
 ```json
 {
@@ -379,7 +410,7 @@ headers). `invalid_count == 0` means safe to proceed to draft creation.
 
 ### Guide tools
 
-`get_conversion_guide`, `get_vendor_cookbook`.
+`usage_get_conversion_guide`, `usage_get_vendor_cookbook`.
 
 ```json
 {
@@ -389,5 +420,5 @@ headers). `invalid_count == 0` means safe to proceed to draft creation.
 }
 ```
 
-`vendor` is present only on `get_vendor_cookbook`. On failure both fall back
+`vendor` is present only on `usage_get_vendor_cookbook`. On failure both fall back
 to the standard `{"success": false, "message": "<reason>"}` envelope.

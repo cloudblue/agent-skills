@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Assemble a CloudBlue Connect Usage File XLSX from JSON inputs.
 
-The MCP tool `upload_usage_file` expects a properly-shaped workbook with
+The MCP tool `usage_upload_file` expects a properly-shaped workbook with
 two sheets — `records` (mandatory) and `categories` (optional). Writing
 that workbook by hand from an LLM is fragile; this script does it
 deterministically.
@@ -44,7 +44,7 @@ except ImportError:
 
 
 # Column order matches Connect's FIXED_HEADERS. Keep in sync with the
-# response of describe_product_usage_schema(product_id).
+# response of usage_describe_product_schema(product_id).
 RECORD_HEADERS = [
     "record_id",
     "record_note",

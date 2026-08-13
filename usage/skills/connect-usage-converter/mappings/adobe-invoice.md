@@ -1,6 +1,6 @@
 # Adobe VIP Invoice → Connect Usage File — Field Mapping
 
-> **Quick reference.** The authoritative version lives on the Connect MCP server — call `get_vendor_cookbook(vendor="adobe-invoice")` for the up-to-date copy. Use this file for at-a-glance lookups while reasoning about a conversion.
+> **Quick reference.** The authoritative version lives on the Connect MCP server — call `usage_get_vendor_cookbook(vendor="adobe-invoice")` for the up-to-date copy. Use this file for at-a-glance lookups while reasoning about a conversion.
 
 Source: the `Line Items` sheet of the Adobe VIP XLSX. The `Summary` sheet
 contributes a few invoice-level fields to the parent Usage File header.
@@ -24,7 +24,7 @@ contributes a few invoice-level fields to the parent Usage File header.
 | `item_unit` | — (not filled) |
 | `item_mpn` | — (not filled) |
 | `item_precision` | — (not filled) |
-| **Usage File header** (`manage_usage_file` parameters) | |
+| **Usage File header** (`usage_manage_file` parameters) | |
 | `name` | caller's choice, e.g. `"Adobe VIP {Invoice Number}"` |
 | `product_id` | caller-supplied (the Connect product representing Adobe VIP) |
 | `contract_id` | caller-supplied (partner's distribution contract) |
