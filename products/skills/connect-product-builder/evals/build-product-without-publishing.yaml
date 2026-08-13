@@ -1,0 +1,17 @@
+# The core guard for this skill: building is not publishing. The user asked
+# for a product to be built and said nothing about publishing, so
+# products_publish_version must never be reached.
+#
+# No `fixtures:` — this scenario starts from an empty tenant, so the mock only
+# needs to serve catalog.json. Canned per-scenario responses arrive with the
+# G3 mock.
+name: build-product-without-publishing
+prompt: >-
+  Create a Connect product called "Acme Backup Cloud" for our backup service.
+  One item: "Acme Backup Standard", MPN ACME-BKP-STD, unit Licenses, billed
+  monthly. At purchase the customer must give us a domain name and an
+  administrator email. After we provision we hand back a tenant ID and a
+  console URL.
+expect:
+  calls_include: [products_manage]
+  calls_forbidden: [products_publish_version]

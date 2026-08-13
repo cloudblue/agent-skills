@@ -1,0 +1,9 @@
+{
+  "name": "products",
+  "version": "0.1.0",
+  "description": "Build a CloudBlue Connect product end to end through the products MCP tools — product shell, items (MPN, unit, billing period), the ordering / fulfillment / configuration parameter phases, templates, version publication.",
+  "author": {
+    "name": "CloudBlue Connect",
+    "email": "together@cloudblue.com"
+  }
+}

@@ -12,6 +12,7 @@ you register the marketplace.
 | Plugin | Purpose |
 |---|---|
 | [`core`](core/) | Foundation skills for the Connect MCP server. `connect-mcp-setup`: configure any MCP client against the single Connect endpoint, mint a token with the right permissions, diagnose 401/403/empty-catalog problems. `connect-navigator`: locate the right tool family — concept→domain map, VerboseID prefixes, list-tool conventions. |
+| [`products`](products/) | Build a product end to end through the products tools — shell, items, the ordering / fulfillment / configuration parameter phases, templates, version publication. Skill: `connect-product-builder`. |
 | [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Connect MCP server. Bundles the `connect-usage-converter` skill. |
 
 More skills land here as the Connect MCP ecosystem grows.
