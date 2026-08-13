@@ -1,7 +1,7 @@
 {
   "name": "products",
-  "version": "0.1.0",
-  "description": "Build a CloudBlue Connect product end to end through the products MCP tools — product shell, items (MPN, unit, billing period), the ordering / fulfillment / configuration parameter phases, templates, version publication.",
+  "version": "0.2.0",
+  "description": "Build a CloudBlue Connect product end to end through the products MCP tools — product shell, items (MPN, unit, billing period), the ordering / fulfillment / configuration parameter phases, templates, version publication — and orchestrate a full launch across products, pricing, marketplaces and listings, owning the checkpoints and ordering between the stage skills.",
   "author": {
     "name": "CloudBlue Connect",
     "email": "together@cloudblue.com"

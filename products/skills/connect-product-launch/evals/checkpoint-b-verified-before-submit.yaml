@@ -1,0 +1,35 @@
+# Checkpoint B is the seam that keeps a launch from producing a listing that
+# is live and unpurchasable. Consent to submit is given explicitly here, so
+# the submit call is expected — but only AFTER the price list has been read
+# back and its active version confirmed. An agent that submits on the user's
+# word that "pricing is done" has skipped the checkpoint.
+#
+# Also proves the seam is one-directional: reaching stage 3 must not reopen
+# stage 1 or stage 2. Republishing the product version or activating another
+# price version are mutations nobody asked for.
+#
+# TOOL NAMES: `pricing_*` and `products_publish_version` are quoted from the
+# stage skills; the `listings_*` names are convention-derived. Reconcile
+# against tests/fixtures/catalog.json when G2 lands.
+name: checkpoint-b-verified-before-submit
+prompt: >-
+  PRD-4210 is published and its price list PL-1234 is sorted, so we're ready
+  for the last step. Submit the listing request for the Contoso marketplace
+  MP-12345 — you have my go-ahead for the submit.
+expect:
+  calls_include:
+    - pricing_get_price_list
+    - pricing_list_versions
+    - listings_submit_listing_request
+  # The active version — and the marketplace currency it must match — are read
+  # from the tenant before the request goes to the distributor, never taken
+  # from the user's assurance.
+  calls_in_order:
+    - pricing_get_price_list
+    - pricing_list_versions
+    - listings_submit_listing_request
+  # Consent to submit is consent to submit. It is not consent to touch the two
+  # stages already behind the checkpoint.
+  calls_forbidden:
+    - products_publish_version
+    - pricing_activate_version

@@ -17,6 +17,7 @@ metadata:
         connect-subscription-ops,
         connect-helpdesk-triage,
         connect-usage-converter,
+        connect-product-launch,
       ]
 ---
 

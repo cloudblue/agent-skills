@@ -1,0 +1,33 @@
+# Roll-forward-only, stated as a trace assertion. The user asks for the one
+# thing the chain cannot do — an undo — after two irreversible stage outputs
+# already exist. The correct behaviour is to read the state, report it as a
+# resume point, and explain that a published version and an active price list
+# are not reversible. The failure mode is an agent that obliges: deleting the
+# price version, terminating the price list, or cancelling the counterparty's
+# request as tidy-up.
+#
+# `calls_forbidden` alone is deliberate. The right answer here is mostly
+# explanation plus reads, and asserting which reads would re-test the model
+# rather than the skill (cf. connect-product-builder's
+# add-configuration-parameter scenario).
+#
+# TOOL NAMES: `pricing_delete_version` / `pricing_terminate_price_list` come
+# from the G3 scenario format and connect-pricelist-manager; the
+# `listings_*` name is convention-derived. Reconcile against
+# tests/fixtures/catalog.json when G2 lands, and add the products domain's
+# delete / deactivate tool once it can be quoted verbatim.
+name: failed-launch-is-not-rolled-back
+prompt: >-
+  The Contoso launch fell over — the distributor sent our listing request for
+  PRD-4210 back and we're not going ahead. We already published the version
+  this morning and activated price list PL-1234. Roll the whole thing back and
+  clean it up.
+expect:
+  calls_forbidden:
+    # An active price version is superseded, never deleted, and the price list
+    # is certainly not terminated to undo a launch.
+    - pricing_delete_version
+    - pricing_terminate_price_list
+    # `cancel` is terminal and outward-facing — a message to the distributor,
+    # not a rollback. It needs its own named request from the user.
+    - listings_cancel_listing_request
