@@ -78,7 +78,7 @@ Ask, in this order:
 ### Consequences to state to the human before you create parameters
 
 - **A parameter's phase is not something to change casually.** Treat the phase as fixed at creation: existing subscriptions carry values keyed on the parameter as originally defined. If a phase turns out wrong, expect to create a new parameter rather than repurpose the old one. Confirm the update semantics against the parameter tool's own description before promising an in-place change.
-- **Ordering parameters are what makes an inquiry possible.** When a fulfillment request is later sent back to the buyer for correction (`inquire`, in the `fulfillment` plugin's territory), what the buyer is asked to fix is an *ordering* parameter. A product whose missing data lives only in fulfillment parameters gives the vendor no way to ask the buyer for it. If the human describes a "we need to go back to the customer" case, that data belongs in Ordering.
+- **Ordering parameters are what makes an inquiry possible.** When a fulfillment request is later sent back to the buyer for correction (`inquire`, in the `fulfillments` plugin's territory), what the buyer is asked to fix is an *ordering* parameter. A product whose missing data lives only in fulfillment parameters gives the vendor no way to ask the buyer for it. If the human describes a "we need to go back to the customer" case, that data belongs in Ordering.
 - **Fulfillment parameters are the vendor's answer channel.** They are what the activation template renders and what the buyer sees after approval.
 - **The parameter id is a contract.** It is the key used in requests, subscriptions and usage reporting. Pick it once, in lower_snake_case, and do not churn it.
 - **Required + hidden is a trap.** A required parameter the buyer cannot see cannot be answered. Check both flags together.
@@ -103,6 +103,6 @@ If the user has not asked to publish, stop after Phase 4 and report the product 
 
 - **No pricing.** Price lists, versions, price points and rate cards belong to the `pricing` plugin. An item's *existence* is this skill's job; what it costs is not. Do not let a request for "add the price" pull you into the pricing domain — hand it over.
 - **No listings or marketplaces.** Publishing a product version is not publishing it to a marketplace. Listing requests, marketplace selection and the vendor → distributor approval flow belong to the `listings` plugin.
-- **No fulfillment processing.** Designing the parameters is here; approving, inquiring or failing actual requests is the `fulfillment` plugin's.
+- **No fulfillment processing.** Designing the parameters is here; approving, inquiring or failing actual requests is the `fulfillments` plugin's.
 - **No usage reporting.** Converting and submitting usage files is the `usage` plugin's. This skill only ensures items exist with the MPNs that usage rows will match on.
 - **No product deletion or teardown.** If the user wants a product removed, say what it would take and let them do it deliberately; this skill does not reach for destructive tools.

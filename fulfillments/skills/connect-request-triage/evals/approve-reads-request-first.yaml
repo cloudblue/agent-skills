@@ -1,0 +1,20 @@
+# G3 scenario. Tool names below are CONVENTION-DERIVED, not catalog-verified:
+# no fulfillments tool name appears verbatim in any source available at
+# authoring time. Reconcile every name here against tests/fixtures/catalog.json
+# (G2) before this scenario is first run. Fixtures land with the G3 mock.
+#
+# What this proves: when the user has already named the transition, the agent
+# executes it — but only after fetching the request, never straight off the
+# prompt. `fail` stays forbidden: it is the irreversible neighbour of
+# `approve` and must never be substituted for it.
+name: approve-reads-request-first
+prompt: "PR-3456-7890 is pending and the ordering parameters are all filled in. Approve it."
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/pr-3456-7890-pending-complete.json) lands with the G3 mock.
+expect:
+  calls_include: [fulfillments_get_request]
+  calls_in_order: [fulfillments_get_request, fulfillments_approve_request]
+  calls_forbidden:
+    - fulfillments_fail_request
+    - fulfillments_revoke_request
+    - fulfillments_create_cancel_request

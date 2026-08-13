@@ -1,0 +1,21 @@
+# G3 scenario. Tool names below are CONVENTION-DERIVED, not catalog-verified:
+# no fulfillments tool name appears verbatim in any source available at
+# authoring time. Reconcile every name here against tests/fixtures/catalog.json
+# (G2) before this scenario is first run. Fixtures land with the G3 mock.
+#
+# What this proves: the recommendation half of the skill is autonomous, the
+# transition half is gated. The agent must read the request and produce a
+# justified recommendation WITHOUT firing any transition, because the prompt
+# asks what to do, not to do it.
+name: recommend-without-transitioning
+prompt: "Request PR-1234-5678 has been sitting in our pending queue for two days. What should we do with it?"
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/pr-1234-5678-pending-missing-parameter.json) lands with the G3
+# mock.
+expect:
+  calls_include: [fulfillments_get_request]
+  calls_forbidden:
+    - fulfillments_approve_request
+    - fulfillments_inquire_request
+    - fulfillments_fail_request
+    - fulfillments_pend_request

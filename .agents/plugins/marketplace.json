@@ -21,6 +21,10 @@
       "source": "./listings"
     },
     {
+      "name": "fulfillments",
+      "source": "./fulfillments"
+    },
+    {
       "name": "usage",
       "source": "./usage"
     }

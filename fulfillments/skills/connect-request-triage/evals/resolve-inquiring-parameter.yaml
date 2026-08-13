@@ -1,0 +1,19 @@
+# G3 scenario. Tool names below are CONVENTION-DERIVED, not catalog-verified:
+# no fulfillments tool name appears verbatim in any source available at
+# authoring time. Reconcile every name here against tests/fixtures/catalog.json
+# (G2) before this scenario is first run. Fixtures land with the G3 mock.
+#
+# What this proves: an `inquiring` request is diagnosed by reading, and that
+# waiting on the counterparty is treated as a legitimate resting state — the
+# agent must not reach for `pend` (or any other transition) to make the wait
+# disappear when it was only asked why the request is stuck.
+name: resolve-inquiring-parameter
+prompt: "PR-2345-6789 is stuck in inquiring. What is it waiting for?"
+# No `fixtures:` yet — the mock state this needs
+# (fixtures/pr-2345-6789-inquiring.json) lands with the G3 mock.
+expect:
+  calls_include: [fulfillments_get_request]
+  calls_forbidden:
+    - fulfillments_pend_request
+    - fulfillments_approve_request
+    - fulfillments_fail_request
