@@ -1,0 +1,9 @@
+{
+  "name": "helpdesk",
+  "version": "0.1.0",
+  "description": "Triage CloudBlue Connect helpdesk cases: read the case and its attachments, pick the correct lifecycle transition (inquire, pend, resolve, close), and draft the partner-facing reply. Drafting is autonomous; sending and any partner-visible transition wait for human confirmation.",
+  "author": {
+    "name": "CloudBlue Connect",
+    "email": "together@cloudblue.com"
+  }
+}

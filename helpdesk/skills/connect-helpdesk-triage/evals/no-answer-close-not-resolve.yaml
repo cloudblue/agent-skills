@@ -1,0 +1,19 @@
+# G3 scenario. Asserted against the recorded tools/call trace of the
+# mock MCP server.
+#
+# Tool names here are convention-derived from the `helpdesk_` prefix and are
+# pinned to whatever the committed catalog fixture says once G2 exists.
+name: no-answer-close-not-resolve
+prompt: >-
+  CA-6042 has been sitting in inquiring for twelve days — the partner never
+  came back with the log we asked for. Wrap it up, you have my go-ahead for
+  the closing note.
+# No `fixtures:` yet — the mock state this needs (fixtures/ca-6042.json)
+# lands with the G3 mock.
+expect:
+  calls_include: [helpdesk_get_case]
+  # Closing note goes out before the terminal state.
+  calls_in_order: [helpdesk_create_case_comment, helpdesk_close_case]
+  # Silence is not a fix: resolving here would claim a resolution the
+  # partner never confirmed.
+  calls_forbidden: [helpdesk_resolve_case]

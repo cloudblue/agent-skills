@@ -25,6 +25,10 @@
       "source": "./fulfillments"
     },
     {
+      "name": "helpdesk",
+      "source": "./helpdesk"
+    },
+    {
       "name": "usage",
       "source": "./usage"
     }
