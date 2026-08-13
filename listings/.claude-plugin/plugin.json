@@ -1,0 +1,9 @@
+{
+  "name": "listings",
+  "version": "0.1.0",
+  "description": "Drive the CloudBlue Connect listing request state machine (submit, deploy, complete, refine, cancel, assign, unassign), pick the target marketplace, and diagnose a stuck listing by naming which side — vendor or distributor — has to act next.",
+  "author": {
+    "name": "CloudBlue Connect",
+    "email": "together@cloudblue.com"
+  }
+}
