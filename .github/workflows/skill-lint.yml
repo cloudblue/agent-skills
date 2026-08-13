@@ -1,0 +1,31 @@
+name: skill lint
+
+# G1 (static lint) + G2 (tool names exist in the catalog).
+# Cheap, runs on every PR.
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      # Pinned: an unpinned skillsaw means a new upstream rule can fail an
+      # unrelated PR. Bump deliberately, together with .skillsaw.yaml#version.
+      - name: skillsaw (generic G1 rules)
+        run: uvx skillsaw==0.17.0 lint --fail-on error
+      - name: Connect-specific G1 checks
+        run: |
+          python3 scripts/lint_skills.py --self-test
+          python3 scripts/lint_skills.py
+      - name: G2 tool-name conformance
+        run: |
+          python3 scripts/check_tool_names.py --self-test
+          python3 scripts/check_tool_names.py

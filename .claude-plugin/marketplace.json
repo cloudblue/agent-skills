@@ -5,9 +5,13 @@
     "email": "together@cloudblue.com"
   },
   "metadata": {
-    "description": "Claude Code plugins for CloudBlue Connect — vendor billing conversion and usage reporting workflows."
+    "description": "Claude Code plugins for CloudBlue Connect — one plugin per Connect module permission, so what you install mirrors what your API token can actually do."
   },
   "plugins": [
+    {
+      "name": "core",
+      "source": "./core"
+    },
     {
       "name": "usage",
       "source": "./usage"

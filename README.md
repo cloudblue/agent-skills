@@ -1,7 +1,7 @@
 # agent-skills
 
 A curated collection of Claude Code **plugins** for interacting with
-CloudBlue Connect MCP servers. Each plugin is a self-contained folder at
+the CloudBlue Connect MCP server. Each plugin is a self-contained folder at
 the repo root, carrying its own `.claude-plugin/plugin.json` and one or
 more skills under `skills/`. The repo-level
 `.claude-plugin/marketplace.json` is the catalog Claude Code reads when
@@ -11,7 +11,8 @@ you register the marketplace.
 
 | Plugin | Purpose |
 |---|---|
-| [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Usage MCP server. Bundles the `connect-usage-converter` skill. |
+| [`core`](core/) | Foundation skills for the Connect MCP server. `connect-mcp-setup`: configure any MCP client against the single Connect endpoint, mint a token with the right permissions, diagnose 401/403/empty-catalog problems. `connect-navigator`: locate the right tool family — concept→domain map, VerboseID prefixes, list-tool conventions. |
+| [`usage`](usage/) | Convert vendor billing reports (AWS CUR, Microsoft NCE incl. Azure consumption, Adobe VIP) into CloudBlue Connect Usage Files and submit them through the Connect MCP server. Bundles the `connect-usage-converter` skill. |
 
 More skills land here as the Connect MCP ecosystem grows.
 
@@ -65,11 +66,14 @@ ln -s ~/code/agent-skills/usage/skills/connect-usage-converter \
 
 ## Configuration prerequisites
 
-Every plugin in this repo talks to a Connect MCP endpoint. Before a
-plugin can do anything useful, your agent's MCP client needs to know how
-to reach Connect and how to authenticate. See each plugin's skill
-`setup.md` for details (worked example lives in
-[`usage/skills/connect-usage-converter/setup.md`](usage/skills/connect-usage-converter/setup.md)).
+Every plugin in this repo reaches Connect through one MCP endpoint. The
+[`core`](core/) plugin's `connect-mcp-setup` skill owns that setup for all
+of them — the endpoint, minting a token with the right permissions, the
+client config, and the 401/403/empty-catalog diagnosis. Install it first:
+
+```
+/plugin install core@cloudblue-agent-skills
+```
 
 The bare minimum is a `~/.mcp.json` (Claude Code) or equivalent entry
 pointing at the MCP endpoint with an `ApiKey` header.
@@ -80,8 +84,6 @@ pointing at the MCP endpoint with an `ApiKey` header.
 agent-skills/
 ├── .claude-plugin/
 │   └── marketplace.json                       ← Claude Code marketplace catalog (no version)
-├── .codex-plugin/
-│   └── plugin.json                            ← Codex plugin manifest
 ├── .agents/plugins/
 │   └── marketplace.json                       ← Codex marketplace catalog
 ├── gemini-extension.json                      ← Gemini CLI extension manifest

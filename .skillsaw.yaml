@@ -1,0 +1,20 @@
+# skillsaw configuration — the G1 static-lint gate, run by
+# .github/workflows/skill-lint.yml.
+# skillsaw covers the generic checks (frontmatter, name/dir match, broken
+# links, plugin.json, marketplace registration); scripts/lint_skills.py adds
+# the Connect-specific ones skillsaw has no rule for.
+version: "0.17.0"
+
+rules:
+  # The per-module MCP path ban lives in scripts/lint_skills.py, not here:
+  # content-banned-references only scans SKILL.md and the defect it exists for
+  # — a stale per-module MCP path — shipped in an auxiliary setup.md.
+  agentskill-valid:
+    required-fields: [version, license]
+
+# Vendored tooling, not part of the shipped marketplace.
+exclude:
+  - ".claude/**"
+  - ".agents/**"
+
+fail-on: error
