@@ -1,6 +1,11 @@
 # The happy path with publication explicitly authorized. Proves the sequence
-# runs in the required order and that publish comes last, after the shell is
-# created — never as the first or an early call.
+# runs in the required order and that cutting the version comes last, after
+# the shell is created — never as the first or an early call.
+#
+# products_create_version is the publishing call: it cuts the version from the
+# draft master and publishes it in one request. products_publish_version is
+# not expected here — it only re-points an existing version at a different
+# availability, and there is no prior version in an empty tenant.
 #
 # No `fixtures:` — starts from an empty tenant; the mock only needs
 # catalog.json until the G3 fixture format exists.
@@ -14,5 +19,5 @@ prompt: >-
   Fulfillment parameters: tenant ID and console URL. Activation message:
   "Your Acme Backup tenant is ready."
 expect:
-  calls_include: [products_manage, products_publish_version]
-  calls_in_order: [products_manage, products_publish_version]
+  calls_include: [products_manage, products_create_version]
+  calls_in_order: [products_manage, products_create_version]

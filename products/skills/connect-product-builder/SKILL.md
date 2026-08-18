@@ -45,7 +45,7 @@ If any of these is missing, ask before calling a mutating tool. Ask for all of t
 2. items           → the products item family        (MPN, unit, period)
 3. parameters      → the products parameter family   (phase taxonomy below)
 4. templates       → the products template family
-5. publish         → products_publish_version        (GATED, irreversible)
+5. cut the version → products_create_version         (GATED, irreversible)
 ```
 
 The order is not a style preference. Each edge exists because the next phase needs an id or a value the previous one produces:
@@ -85,7 +85,9 @@ Ask, in this order:
 
 ## Phase 5 — publish is gated
 
-`products_publish_version` is the point of no return for a version. Before calling it:
+`products_create_version` is the point of no return. It cuts a version from the draft master *and* publishes it in the same call — there is no separate publish step to change your mind at. Its `availability` is required — private, public or staging — and distributor-visible means `public`, so ask which one is meant. (`products_publish_version` is a different tool: it takes an existing version number and moves it between public / private / staging. It cannot create the version you are about to cut, and calling it for a version that does not exist yet answers `404`.)
+
+Before calling it:
 
 1. Run the pre-publish checklist in [`workflow.md`](workflow.md#pre-publish-checklist).
 2. Summarize to the human, in one message: the product id, the item count with their MPNs and units, the parameter list grouped by phase, the templates, and what publishing means (this version becomes immutable; further changes require a new version).

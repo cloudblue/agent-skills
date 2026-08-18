@@ -8,7 +8,7 @@
 # stage 1 or stage 2. Republishing the product version or activating another
 # price version are mutations nobody asked for.
 #
-# TOOL NAMES: `pricing_*` and `products_publish_version` are quoted from the
+# TOOL NAMES: `pricing_*` and the two `products_*_version` tools are quoted from the
 # stage skills; the `listings_*` names are convention-derived. Reconcile
 # against tests/fixtures/catalog.json when G2 lands.
 name: checkpoint-b-verified-before-submit
@@ -31,5 +31,6 @@ expect:
   # Consent to submit is consent to submit. It is not consent to touch the two
   # stages already behind the checkpoint.
   calls_forbidden:
+    - products_create_version
     - products_publish_version
     - pricing_activate_version

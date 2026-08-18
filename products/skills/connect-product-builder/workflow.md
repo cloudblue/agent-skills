@@ -160,10 +160,10 @@ Report each line with its actual value.
 Anything that fails, fix before publishing. Publishing is not a way to find
 out whether the product is complete.
 
-## Step 5 — Publish the version (mutating, gated, irreversible)
+## Step 5 — Cut the version (mutating, gated, irreversible)
 
 ```
-products_publish_version(...)
+products_create_version(...)
 ```
 
 **Do not call this without explicit confirmation in the current
@@ -171,15 +171,25 @@ conversation.** Present the checklist result plus a one-line statement of
 consequence — "this freezes version N of PRD-…; further changes need a new
 version" — and wait.
 
-The publish tool **re-publishes an existing numbered version** — it does not
-create one. Cutting a *new* version from the current draft master (the common
-case when extending an already-published product) answers `404` on the target
-version number; see the failure table for the path.
+This one call both **cuts** the version from the current draft master and
+**publishes** it — there is no second step, and no window between the two in
+which to reconsider. Its reply carries the number the server assigned; report
+that number to the human rather than guessing it or re-listing to find out.
 
-After publishing, verify with `stats.versions` (and the item's own `status`),
-not the product's top-level `changes_description`/`public`/`staging` fields —
-those reflect the *next* draft master and reset immediately, which reads as if
-the publish never happened.
+`availability` is **required** — there is no default: the version is cut and frozen either
+way, but distributors only see it if you pass `availability: "public"`. Ask
+which one the human means; the schema will not let the call through without it.
+
+`products_publish_version` is a **different tool** and not the one for this
+step. It takes an existing version number and moves that version between
+public / private / staging. It cannot create a version, and pointing it at a
+version that does not exist yet — the normal state at step 5, and the common
+case when extending an already-published product — answers `404`.
+
+Verification after the fact, if you did not keep the returned number, reads
+`stats.versions` (and the item's own `status`) — not the product's top-level
+`changes_description`/`public`/`staging` fields, which reflect the *next*
+draft master and reset immediately, reading as if the publish never happened.
 
 What changes after publication:
 
@@ -206,6 +216,6 @@ tool that would undo it.
 | Duplicate error on a parameter | The parameter id is already taken | Read the existing parameter; reuse it if it means the same thing, otherwise pick a new id with the human |
 | Item or parameter rejected on a published product | The version is frozen | A new version is required; do not retry the same call |
 | Publish rejected as incomplete | Something in the checklist is genuinely missing | Read the error, fix that specific gap, re-run the checklist. Do not loop on publish |
-| `404` on publish for version N | Version N does not exist yet — the publish tool only re-publishes existing versions | A new version must be created-and-published in one step; if no create-version tool exists in the catalog, that is a documented MCP gap and the REST `POST /products/{id}/versions` (with `changes_description`) is the only path — say so instead of retrying. Verified: that single call both cuts and publishes (`status: published` in the 201 response) — no follow-up publish call |
+| `404` on `products_publish_version` for version N | Version N does not exist yet — that tool only moves an *existing* version between public / private / staging | Wrong tool for cutting a version. Use `products_create_version`, which creates and publishes in one call — its reply carries the assigned version number, and no follow-up publish call is needed. Do not retry the `404` |
 | Activation message renders blank fields | Template placeholder does not match a real parameter id | Compare the template body against the parameter list; fix the template |
 | A request for prices, marketplaces or listings | Out of scope | Name the owning plugin and hand over — do not improvise with `products` tools |
