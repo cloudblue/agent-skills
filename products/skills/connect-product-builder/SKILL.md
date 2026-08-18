@@ -85,7 +85,7 @@ Ask, in this order:
 
 ## Phase 5 — publish is gated
 
-`products_create_version` is the point of no return. It cuts a version from the draft master *and* publishes it in the same call — there is no separate publish step to change your mind at. Its `availability` defaults to `private`; distributor-visible needs an explicit `public`, so ask which one is meant. (`products_publish_version` is a different tool: it takes an existing version number and moves it between public / private / staging. It cannot create the version you are about to cut, and calling it for a version that does not exist yet answers `404`.)
+`products_create_version` is the point of no return. It cuts a version from the draft master *and* publishes it in the same call — there is no separate publish step to change your mind at. Its `availability` is required — private, public or staging — and distributor-visible means `public`, so ask which one is meant. (`products_publish_version` is a different tool: it takes an existing version number and moves it between public / private / staging. It cannot create the version you are about to cut, and calling it for a version that does not exist yet answers `404`.)
 
 Before calling it:
 

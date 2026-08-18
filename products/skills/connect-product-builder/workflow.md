@@ -176,9 +176,9 @@ This one call both **cuts** the version from the current draft master and
 which to reconsider. Its reply carries the number the server assigned; report
 that number to the human rather than guessing it or re-listing to find out.
 
-`availability` defaults to **`private`**: the version is cut and frozen either
+`availability` is **required** — there is no default: the version is cut and frozen either
 way, but distributors only see it if you pass `availability: "public"`. Ask
-which one the human means; do not rely on the default.
+which one the human means; the schema will not let the call through without it.
 
 `products_publish_version` is a **different tool** and not the one for this
 step. It takes an existing version number and moves that version between
