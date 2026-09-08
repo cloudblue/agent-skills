@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Foundation skills for the CloudBlue Connect MCP server: first-run setup (endpoint, token permissions, 401/403/empty-catalog diagnosis) and the catalog navigator (which of the nine domains owns a concept, VerboseID prefixes, list-tool conventions).",
   "author": {
     "name": "CloudBlue Connect",
